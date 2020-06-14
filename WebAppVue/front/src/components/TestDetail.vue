@@ -8,6 +8,9 @@
                     </h1>
                 </v-col>
                 <v-col>
+                    <v-btn flat to="/">Home</v-btn>
+                </v-col>
+                <v-col>
                     <v-btn flat to="/test/new">New</v-btn>
                 </v-col>
                 <v-col>
