@@ -8,13 +8,26 @@
                     </h1>
                 </v-col>
                 <v-col>
-                    <v-btn flat to="/">Home</v-btn>
+                    <v-btn small color="primary" to="/test/list">List</v-btn>
                 </v-col>
                 <v-col>
-                    <v-btn flat to="/test/new">New</v-btn>
+                    <v-text-field
+                        label="name"
+                        placeholder="名称"
+                        v-model="name"
+                        outlined
+                    ></v-text-field>
                 </v-col>
                 <v-col>
-                    <v-btn flat to="/test/list">List</v-btn>
+                    <v-textarea
+                        label="description"
+                        placeholder="説明"
+                        v-model="description"
+                        outlined
+                    ></v-textarea>
+                </v-col>
+                <v-col>
+                    <v-btn small color="primary" @click="onSave">Save</v-btn>
                 </v-col>
             </v-col>
         </v-row>
@@ -23,13 +36,40 @@
 
 <script>
     export default {
-        name: '�Q�ƁE�ҏW',
+        name: "TestNew",
 
         data: () => ({
+
         }),
         computed: {
+            name: {
+                get() {
+                    return this.$store.getters["test/getName"];
+                },
+                set(value) {
+                    this.$store.commit("test/setName", value);
+                }
+            },
+            description: {
+                get() {
+                    return this.$store.getters["test/getDescription"];
+                },
+                set(value) {
+                    this.$store.commit("test/setDescription", value);
+                }
+            },
+            // timeStamp() {
+            //     return this.$store.getters["test/getTimeStamp"];
+            // }
         },
         mounted() {
+            this.$store.dispatch("test/createItem");
+        },
+        methods: {
+            onSave() {
+                this.$store.dispatch("test/saveItem");
+                this.$router.push("/test/list");
+            }
         }
     }
 </script>

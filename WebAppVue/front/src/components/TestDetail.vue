@@ -8,13 +8,35 @@
                     </h1>
                 </v-col>
                 <v-col>
-                    <v-btn flat to="/">Home</v-btn>
+                    <v-btn small color="primary" to="/test/list">List</v-btn>
                 </v-col>
                 <v-col>
-                    <v-btn flat to="/test/new">New</v-btn>
+                    <v-text-field
+                        label="name"
+                        placeholder="名称"
+                        v-model="name"
+                        outlined
+                    ></v-text-field>
                 </v-col>
                 <v-col>
-                    <v-btn flat to="/test/list">List</v-btn>
+                    <v-textarea
+                        label="description"
+                        placeholder="説明"
+                        v-model="description"
+                        outlined
+                    ></v-textarea>
+                </v-col>
+                <v-col>
+                    <v-textarea
+                        label="timestamp"
+                        placeholder="登録日"
+                        v-model="timestamp"
+                        :readonly="true"
+                        outlined
+                    ></v-textarea>
+                </v-col>
+                <v-col>
+                    <v-btn small color="primary" @click="onSave">Save</v-btn>
                 </v-col>
             </v-col>
         </v-row>
@@ -23,13 +45,44 @@
 
 <script>
     export default {
-        name: '“o˜^‰æ–Ê',
+        name: "TestDetail",
 
-        data: () => ({
-        }),
+        data() {
+            return {
+                index: this.$route.params.id,
+            };
+        },
         computed: {
+            name: {
+                get() {
+                    return this.$store.getters["test/getName"];
+                },
+                set(value) {
+                    this.$store.commit("test/setName", value);
+                }
+            },
+            description: {
+                get() {
+                    return this.$store.getters["test/getDescription"];
+                },
+                set(value) {
+                    this.$store.commit("test/setDescription", value);
+                }
+            },
+            timestamp: {
+                get() {
+                    return this.$store.getters["test/getTimeStamp"];
+                },
+            }
         },
         mounted() {
+            this.$store.dispatch("test/loadItem", this.index);
+        },
+        methods: {
+            onSave() {
+                this.$store.dispatch("test/updateItem");
+                this.$router.push("/test/list");
+            }
         }
     }
 </script>

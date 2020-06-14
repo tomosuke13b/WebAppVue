@@ -8,13 +8,32 @@
                     </h1>
                 </v-col>
                 <v-col>
-                    <v-btn flat to="/">Home</v-btn>
+                    <v-btn small color="primary" to="/">Home</v-btn>
                 </v-col>
                 <v-col>
-                    <v-btn flat to="/test/list/1">Detail</v-btn>
+                    <v-btn small color="primary" to="/test/list/1">Detail</v-btn>
                 </v-col>
                 <v-col>
-                    <v-btn flat to="/test/new">New</v-btn>
+                    <v-btn small color="primary" to="/test/new">New</v-btn>
+                </v-col>
+                <v-col>
+                    <v-list>
+                        <v-list-item
+                            v-for="(item, index) in items"
+                            :key="index"
+                            @click="onItem(item.index)"
+                        >
+                            <v-list-item-content>
+                                <v-list-item-title v-text="item.index"></v-list-item-title>
+                            </v-list-item-content>
+                            <v-list-item-content>
+                                <v-list-item-title v-text="item.name"></v-list-item-title>
+                            </v-list-item-content>
+                            <v-list-item-content>
+                                <v-list-item-title v-text="item.timeStamp"></v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list>
                 </v-col>
             </v-col>
         </v-row>
@@ -23,13 +42,22 @@
 
 <script>
     export default {
-        name: '�ꗗ���',
+        name: "TestList",
 
         data: () => ({
         }),
         computed: {
+            items() {
+                return this.$store.getters["test/getItems"];
+            }
         },
         mounted() {
+        },
+        methods: {
+            onItem(index) {
+                if(index === undefined || index == -1) return;
+                this.$router.push("/test/list/" + index);
+            }
         }
     }
 </script>
