@@ -23,3 +23,7 @@ pnpm-debug.log*
 WebAppVue/front/__.git/
 WebAppVue/front/dist/
 WebAppVue/front/__.gitignore
+mssql-db
+obj
+WebAppVue/bin
+bin

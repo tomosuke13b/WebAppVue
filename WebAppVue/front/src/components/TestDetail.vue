@@ -12,31 +12,31 @@
                 </v-col>
                 <v-col>
                     <v-text-field
-                        label="name"
-                        placeholder="名称"
+                        label="名称"
+                        placeholder="name"
                         v-model="name"
+                        :readonly="isView"
                         outlined
                     ></v-text-field>
                 </v-col>
                 <v-col>
                     <v-textarea
-                        label="description"
-                        placeholder="説明"
+                        label="説明"
+                        placeholder="description"
                         v-model="description"
+                        :readonly="isView"
                         outlined
                     ></v-textarea>
                 </v-col>
                 <v-col>
-                    <v-textarea
-                        label="timestamp"
-                        placeholder="登録日"
+                    <v-text-field
+                        label="登録日"
                         v-model="timestamp"
                         :readonly="true"
-                        outlined
-                    ></v-textarea>
+                    ></v-text-field>
                 </v-col>
                 <v-col>
-                    <v-btn small color="primary" @click="onSave">Save</v-btn>
+                    <v-btn small color="primary" @click="onSave" :disabled="isView">Save</v-btn>
                 </v-col>
             </v-col>
         </v-row>
@@ -53,6 +53,9 @@
             };
         },
         computed: {
+            isView() {
+                return this.$store.getters["test/getIsView"];
+            },
             name: {
                 get() {
                     return this.$store.getters["test/getName"];

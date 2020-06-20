@@ -2,6 +2,7 @@
 
 const state = {
     test1: "HelloVue 1!!!!",
+    isView: true,
     item: {
         index: -1,
         name: null,
@@ -14,6 +15,9 @@ const state = {
 const getters = {
     getTest1: state => {
         return state.test1;
+    },
+    getIsView: state => {
+        return state.isView;
     },
     getName: state => { 
         return state.item.name;
@@ -67,6 +71,9 @@ const actions = {
 const mutations = {
     setTest1(state, value) {
         state.test1 = value;
+    },
+    setIsView(state, value) {
+        state.isView = value;
     },
     initItem(state) {
         state.item = {

@@ -21,7 +21,6 @@
                         <v-list-item
                             v-for="(item, index) in items"
                             :key="index"
-                            @click="onItem(item.index)"
                         >
                             <v-list-item-content>
                                 <v-list-item-title v-text="item.index"></v-list-item-title>
@@ -32,6 +31,13 @@
                             <v-list-item-content>
                                 <v-list-item-title v-text="item.timeStamp"></v-list-item-title>
                             </v-list-item-content>
+                            <v-list-item-action>
+                                <v-btn small color="primary" @click="onEdit(item.index)"  >編集</v-btn>
+                            </v-list-item-action>
+                            <v-list-item-action>
+                                <v-btn small color="primary" @click="onView(item.index)" >参照</v-btn>
+                            </v-list-item-action>
+
                         </v-list-item>
                     </v-list>
                 </v-col>
@@ -54,8 +60,14 @@
         mounted() {
         },
         methods: {
-            onItem(index) {
+            onEdit(index) {
                 if(index === undefined || index == -1) return;
+                this.$store.commit("test/setIsView", false);
+                this.$router.push("/test/list/" + index);
+            },
+            onView(index) {
+                if(index === undefined || index == -1) return;
+                this.$store.commit("test/setIsView", true);
                 this.$router.push("/test/list/" + index);
             }
         }

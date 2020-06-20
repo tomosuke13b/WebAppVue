@@ -12,16 +12,16 @@
                 </v-col>
                 <v-col>
                     <v-text-field
-                        label="name"
-                        placeholder="名称"
+                        label="名称"
+                        placeholder="name"
                         v-model="name"
                         outlined
                     ></v-text-field>
                 </v-col>
                 <v-col>
                     <v-textarea
-                        label="description"
-                        placeholder="説明"
+                        label="説明"
+                        placeholder="description"
                         v-model="description"
                         outlined
                     ></v-textarea>

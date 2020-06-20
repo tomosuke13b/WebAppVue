@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  webappvue:
+    image: ${DOCKER_REGISTRY-}webappvue
+    container_name: webappvue_app
+    build:
+      context: .
+      dockerfile: WebAppVue/Dockerfile
+    ports:
+      - 9080:80
+      - 9443:443
+
+  mssql:
+    container_name: webappvue_mssql
+    build:
+      context: ./WebAppVue/Container/mssql
+      dockerfile: Dockerfile
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "1234qwerAS"
+    volumes: 
+      - ./mssql-db:/var/opt/mssql
+    ports:
+      - 1433:1433
