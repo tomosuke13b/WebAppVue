@@ -1,17 +1,45 @@
-﻿import axios from "axios";
-
-axios.defaults.baseURL = 'https://localhost:9443/api';
-axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
-axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+﻿import api from "@/lib/api.js";
 
 export default {
-    testApi(id, callback) {
-        axios.get("/test/" + id)
-            .then((res) => {
-                callback(res.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+    gets() {
+        return api({
+            endpoint: "/test",
+            method: "GET",
+        });
     },
+    get(id) {
+        return api({
+            endpoint: "/test/" + id,
+            method: "GET",
+        });
+    },
+    post(body) {
+        return api({
+            endpoint: "/test",
+            method: "POST",
+            body
+        });
+    },
+    put(id, body) {
+        return api({
+            endpoint: "/test/" + id,
+            method: "PUT",
+            body
+        });
+    },
+    delete(id) {
+        return api({
+            endpoint: "/test/" + id,
+            method: "DELETE",
+        });
+    },
+    // testApi(callback) {
+    //     axios.get("/test")
+    //         .then((res) => {
+    //             callback(res.data);
+    //         })
+    //         .catch((error) => {
+    //             console.log(error);
+    //         });
+    // },
 };
