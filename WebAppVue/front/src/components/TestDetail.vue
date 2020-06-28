@@ -11,22 +11,11 @@
                     <v-btn small color="primary" to="/test/list">List</v-btn>
                 </v-col>
                 <v-col>
-                    <v-text-field
-                        label="名称"
-                        placeholder="name"
-                        v-model="name"
-                        :readonly="isView"
-                        outlined
-                    ></v-text-field>
-                </v-col>
-                <v-col>
-                    <v-textarea
-                        label="説明"
-                        placeholder="description"
-                        v-model="description"
-                        :readonly="isView"
-                        outlined
-                    ></v-textarea>
+                    <Editor 
+                        :value="value"
+                        :isView="isView"
+                        @onEdit="onEdit"
+                    />
                 </v-col>
                 <v-col>
                     <v-text-field
@@ -47,33 +36,28 @@
 </template>
 
 <script>
+    import { Editor } from "@/components/edit";
     export default {
         name: "TestDetail",
-
+        components: { Editor },
         data() {
             return {
                 id: this.$route.params.id,
+                value: {
+                    name : "",
+                    description : "",
+                },
             };
         },
         computed: {
             isView() {
                 return this.$store.getters["test/getIsView"];
             },
-            name: {
-                get() {
-                    return this.$store.getters["test/getName"];
-                },
-                set(value) {
-                    this.$store.commit("test/setName", value);
-                }
+            name() {
+                return this.$store.getters["test/getName"];
             },
-            description: {
-                get() {
-                    return this.$store.getters["test/getDescription"];
-                },
-                set(value) {
-                    this.$store.commit("test/setDescription", value);
-                }
+            description() {
+                return this.$store.getters["test/getDescription"];
             },
             timestamp: {
                 get() {
@@ -81,11 +65,32 @@
                 },
             }
         },
+        watch: {
+            name(value) {
+                this.value = {
+                    name : value,
+                    description : this.value.description,
+                }
+            },
+            description(value) {
+                this.value = {
+                    name : this.value.name,
+                    description : value,
+                }
+            },
+        },
         mounted() {
             this.$store.dispatch("test/loadItem", this.id);
         },
         methods: {
+            onEdit(value) {
+                this.value.name = value.name;
+                this.value.description = value.description;
+            },
             onSave() {
+                this.$store.commit("test/setName", this.value.name);
+                this.$store.commit("test/setDescription", this.value.description);
+
                 this.$store.dispatch("test/updateItem", this.id);
                 this.$router.push("/test/list");
             },
