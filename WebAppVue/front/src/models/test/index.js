@@ -40,31 +40,52 @@ const actions = {
             commit("setTest1", item);
         });
     },
+    load({ commit }) {
+        api.gets()
+            .then((items) => {
+                commit("setItems", items);
+            });
+    },
     createItem({ commit }) { 
         commit("initItem");
         commit("setName", null);
         commit("setDescription", null);
     },
-    loadItem({ state, commit }, index) {
+    loadItem({ commit }, id) {
         commit("initItem");
-        state.items.forEach(item => {
-            if (item.index == index) {
+        api.get(id)
+            .then((item) => {
                 commit("setIndex", item.index);
                 commit("setName", item.name);
                 commit("setDescription", item.description);
                 commit("setTimeStamp", item.timeStamp);
-                return;
-            }
-        });
+            });
     },
-    saveItem({ commit }) {
+    saveItem({ state, commit, dispatch }) {
         commit("setTimeStamp", new Date());
-        commit("appendItem");
-        commit("initItem");
+        // commit("appendItem");
+        api.post(state.item)
+            .then(() => {
+                commit("initItem");
+                dispatch("load");
+            });
     },
-    updateItem({ commit }) {
-        commit("updateItem");
-        commit("initItem");
+    updateItem({ state, commit, dispatch}, id) {
+        // commit("updateItem");
+        api.put(id, state.item)
+            .then(() => {
+                commit("initItem");
+                dispatch("load");
+            });
+    },
+    // await dispatch("createPreview", { contentsType });
+    deleteItem({ commit, dispatch }, id) {
+        // commit("updateItem");
+        api.delete(id)
+            .then(() => {
+                commit("initItem");
+                dispatch("load");
+            });
     },
 };
 
@@ -107,7 +128,10 @@ const mutations = {
                 return;
             }
         });
-    }
+    },
+    setItems(state, value) {
+        state.items = value;
+    },
 };
 
 export default {

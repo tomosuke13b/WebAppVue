@@ -38,6 +38,9 @@
                 <v-col>
                     <v-btn small color="primary" @click="onSave" :disabled="isView">Save</v-btn>
                 </v-col>
+                <v-col>
+                    <v-btn small color="primary" @click="onDelete" :disabled="isView">Delete</v-btn>
+                </v-col>
             </v-col>
         </v-row>
     </v-container>
@@ -49,7 +52,7 @@
 
         data() {
             return {
-                index: this.$route.params.id,
+                id: this.$route.params.id,
             };
         },
         computed: {
@@ -79,11 +82,15 @@
             }
         },
         mounted() {
-            this.$store.dispatch("test/loadItem", this.index);
+            this.$store.dispatch("test/loadItem", this.id);
         },
         methods: {
             onSave() {
-                this.$store.dispatch("test/updateItem");
+                this.$store.dispatch("test/updateItem", this.id);
+                this.$router.push("/test/list");
+            },
+            onDelete() {
+                this.$store.dispatch("test/deleteItem", this.id);
                 this.$router.push("/test/list");
             }
         }

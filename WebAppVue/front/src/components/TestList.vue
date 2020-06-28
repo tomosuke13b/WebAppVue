@@ -32,10 +32,10 @@
                                 <v-list-item-title v-text="item.timeStamp"></v-list-item-title>
                             </v-list-item-content>
                             <v-list-item-action>
-                                <v-btn small color="primary" @click="onEdit(item.index)"  >編集</v-btn>
+                                <v-btn small color="primary" @click="onEdit(item.id)"  >編集</v-btn>
                             </v-list-item-action>
                             <v-list-item-action>
-                                <v-btn small color="primary" @click="onView(item.index)" >参照</v-btn>
+                                <v-btn small color="primary" @click="onView(item.id)" >参照</v-btn>
                             </v-list-item-action>
 
                         </v-list-item>
@@ -58,17 +58,18 @@
             }
         },
         mounted() {
+            this.$store.dispatch("test/load");
         },
         methods: {
-            onEdit(index) {
-                if(index === undefined || index == -1) return;
+            onEdit(id) {
+                if(id === undefined || id == -1) return;
                 this.$store.commit("test/setIsView", false);
-                this.$router.push("/test/list/" + index);
+                this.$router.push("/test/list/" + id);
             },
-            onView(index) {
-                if(index === undefined || index == -1) return;
+            onView(id) {
+                if(id === undefined || id == -1) return;
                 this.$store.commit("test/setIsView", true);
-                this.$router.push("/test/list/" + index);
+                this.$router.push("/test/list/" + id);
             }
         }
     }

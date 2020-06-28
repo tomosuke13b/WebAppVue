@@ -8,13 +8,13 @@
                     </h1>
                 </v-col>
                 <v-col>
-                    <v-btn flat to="/test/list">List</v-btn>
+                    <v-btn small color="primary"  to="/test/list">List</v-btn>
                 </v-col>
                 <v-col>
-                    <v-btn flat to="/test/list/1">Detail</v-btn>
+                    <v-btn small color="primary"  to="/test/list/1">Detail</v-btn>
                 </v-col>
                 <v-col>
-                    <v-btn flat to="/test/new">New</v-btn>
+                    <v-btn small color="primary"  to="/test/new">New</v-btn>
                 </v-col>
             </v-col>
         </v-row>
@@ -23,7 +23,7 @@
 
 <script>
     export default {
-        name: '�o�^���',
+        name: 'TestHome',
 
         data: () => ({
         }),
