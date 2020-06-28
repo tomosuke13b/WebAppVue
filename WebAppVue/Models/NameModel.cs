@@ -94,12 +94,12 @@ namespace WebAppVue.Models
             {
                 var name = db.Names
                     .Where(name => !name.Deleted)
-                    .FirstOrDefault(name => name.Id == item.Id);
+                    .FirstOrDefault(name => name.Id == id);
                 if (name == null) return false;
 
                 var description = db.Descriptions
                     .Where(description => !description.Deleted)
-                    .FirstOrDefault(description => description.NamesId == item.Id);
+                    .FirstOrDefault(description => description.NamesId == id);
                 if (description == null) return false;
 
                 name.Text = item.Name;

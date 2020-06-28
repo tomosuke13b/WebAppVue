@@ -33,8 +33,19 @@ namespace WebAppVue
                     name: MyAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:8080");
+                                      builder
+                                          .AllowAnyMethod()
+                                          .AllowAnyHeader()
+                                          .AllowCredentials()
+                                          .WithOrigins(new string[] { "http://localhost:8080" });
                                   });
+            });
+            services.AddAntiforgery(options =>
+            {
+                // Set Cookie properties using CookieBuilder propertiesÅı.
+                options.FormFieldName = "AntiforgeryFieldname";
+                options.HeaderName = "XSRF-TOKEN";
+                options.SuppressXFrameOptionsHeader = false;
             });
         }
 
