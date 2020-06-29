@@ -27,7 +27,13 @@ const routes = [
     {
         path: "/test/list/:id",
         name: "testDetail",
-        component: TestDetail
+        component: TestDetail,
+        props(route) {
+            const props = { ...route.params };
+            props.id = Number(props.id);
+            props.isView = props.isView.toString() === "true";
+            return props;
+        }
     }
 ];
 
