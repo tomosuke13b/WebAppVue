@@ -31,6 +31,8 @@
         name: "TestNew",
         components: { Editor },
 
+        props: {
+        },
         data() {
             return {
                 value: {
@@ -41,10 +43,10 @@
         },
         computed: {
             name() {
-                return this.$store.getters["test/getName"];
+                return this.$store.getters["item/getName"];
             },
             description() {
-                return this.$store.getters["test/getDescription"];
+                return this.$store.getters["item/getDescription"];
             },
         },
         watch: {
@@ -62,19 +64,19 @@
             },
         },
         mounted() {
-            this.$store.dispatch("test/createItem");
+            this.$store.dispatch("item/createItem");
         },
         methods: {
             onEdit(value) {
                 this.value.name = value.name;
                 this.value.description = value.description;
             },
-            onSave() {
-                this.$store.commit("test/setName", this.value.name);
-                this.$store.commit("test/setDescription", this.value.description);
+            async onSave() {
+                this.$store.commit("item/setName", this.value.name);
+                this.$store.commit("item/setDescription", this.value.description);
 
-                this.$store.dispatch("test/saveItem");
-                this.$router.push("/test/list");
+                await this.$store.dispatch("item/saveItem");
+                this.$router.push( { name: "testList" } );
             }
         }
     }

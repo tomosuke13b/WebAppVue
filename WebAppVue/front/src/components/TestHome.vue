@@ -10,12 +10,6 @@
                 <v-col>
                     <v-btn small color="primary"  to="/test/list">List</v-btn>
                 </v-col>
-                <v-col>
-                    <v-btn small color="primary"  to="/test/list/1">Detail</v-btn>
-                </v-col>
-                <v-col>
-                    <v-btn small color="primary"  to="/test/new">New</v-btn>
-                </v-col>
             </v-col>
         </v-row>
     </v-container>

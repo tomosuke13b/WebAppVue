@@ -11,9 +11,6 @@
                     <v-btn small color="primary" to="/">Home</v-btn>
                 </v-col>
                 <v-col>
-                    <v-btn small color="primary" to="/test/list/1">Detail</v-btn>
-                </v-col>
-                <v-col>
                     <v-btn small color="primary" to="/test/new">New</v-btn>
                 </v-col>
                 <v-col>
@@ -50,26 +47,26 @@
     export default {
         name: "TestList",
 
+        props: {
+        },
         data: () => ({
         }),
         computed: {
             items() {
-                return this.$store.getters["test/getItems"];
+                return this.$store.getters["list/getItems"];
             }
         },
         mounted() {
-            this.$store.dispatch("test/load");
+            this.$store.dispatch("list/load");
         },
         methods: {
             onEdit(id) {
                 if(id === undefined || id == -1) return;
-                this.$store.commit("test/setIsView", false);
-                this.$router.push("/test/list/" + id);
+                this.$router.push({ name: "testDetail", params: { id: id, isView: false } });
             },
             onView(id) {
                 if(id === undefined || id == -1) return;
-                this.$store.commit("test/setIsView", true);
-                this.$router.push("/test/list/" + id);
+                this.$router.push({ name: "testDetail", params: { id: id, isView: true } });
             }
         }
     }

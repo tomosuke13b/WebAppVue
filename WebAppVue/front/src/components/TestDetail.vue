@@ -40,9 +40,18 @@
     export default {
         name: "TestDetail",
         components: { Editor },
+        props: {
+            id: {
+                default: -1,
+                type: Number
+            },
+            isView: {
+                default: false,
+                type: Boolean
+            },
+        },
         data() {
             return {
-                id: this.$route.params.id,
                 value: {
                     name : "",
                     description : "",
@@ -50,18 +59,15 @@
             };
         },
         computed: {
-            isView() {
-                return this.$store.getters["test/getIsView"];
-            },
             name() {
-                return this.$store.getters["test/getName"];
+                return this.$store.getters["item/getName"];
             },
             description() {
-                return this.$store.getters["test/getDescription"];
+                return this.$store.getters["item/getDescription"];
             },
             timestamp: {
                 get() {
-                    return this.$store.getters["test/getTimeStamp"];
+                    return this.$store.getters["item/getTimeStamp"];
                 },
             }
         },
@@ -80,23 +86,23 @@
             },
         },
         mounted() {
-            this.$store.dispatch("test/loadItem", this.id);
+            this.$store.dispatch("item/loadItem", this.id);
         },
         methods: {
             onEdit(value) {
                 this.value.name = value.name;
                 this.value.description = value.description;
             },
-            onSave() {
-                this.$store.commit("test/setName", this.value.name);
-                this.$store.commit("test/setDescription", this.value.description);
+            async onSave() {
+                this.$store.commit("item/setName", this.value.name);
+                this.$store.commit("item/setDescription", this.value.description);
 
-                this.$store.dispatch("test/updateItem", this.id);
-                this.$router.push("/test/list");
+                await this.$store.dispatch("item/updateItem", this.id);
+                this.$router.push( { name: "testList" } );
             },
-            onDelete() {
-                this.$store.dispatch("test/deleteItem", this.id);
-                this.$router.push("/test/list");
+            async onDelete() {
+                await this.$store.dispatch("item/deleteItem", this.id);
+                this.$router.push( { name: "testList" } );
             }
         }
     }
