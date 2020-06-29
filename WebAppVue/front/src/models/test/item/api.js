@@ -1,12 +1,6 @@
 ﻿import api from "@/lib/api.js";
 
 export default {
-    gets() {
-        return api({
-            endpoint: "/test",
-            method: "GET",
-        });
-    },
     get(id) {
         return api({
             endpoint: "/test/" + id,
@@ -33,13 +27,4 @@ export default {
             method: "DELETE",
         });
     },
-    // testApi(callback) {
-    //     axios.get("/test")
-    //         .then((res) => {
-    //             callback(res.data);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         });
-    // },
 };

@@ -1,11 +1,13 @@
 ﻿import Vue from "vue";
 import Vuex from "vuex";
-import test from "./models/test";
+import item from "./models/test/item";
+import list from "./models/test/list";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
-        test,
+        item,
+        list,
     },
 });

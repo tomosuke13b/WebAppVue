@@ -1,24 +1,15 @@
-﻿import api from "@/models/test/api.js";
+﻿import api from "@/models/test/item/api.js";
 
 const state = {
-    test1: "HelloVue 1!!!!",
-    isView: true,
     item: {
         index: -1,
         name: null,
         description: null,
         timeStamp: null
     },
-    items: []
 }
 
 const getters = {
-    getTest1: state => {
-        return state.test1;
-    },
-    getIsView: state => {
-        return state.isView;
-    },
     getName: state => { 
         return state.item.name;
     },
@@ -28,24 +19,9 @@ const getters = {
     getTimeStamp: state => {
         return state.item.timeStamp;
     },
-    getItems: state => { 
-        return state.items;
-    }
 }
 
 const actions = {
-    testAction({ commit }, id) {
-        console.log("testAction");
-        api.testApi(id, (item) => {
-            commit("setTest1", item);
-        });
-    },
-    load({ commit }) {
-        api.gets()
-            .then((items) => {
-                commit("setItems", items);
-            });
-    },
     createItem({ commit }) { 
         commit("initItem");
         commit("setName", null);
@@ -61,41 +37,28 @@ const actions = {
                 commit("setTimeStamp", item.timeStamp);
             });
     },
-    saveItem({ state, commit, dispatch }) {
+    async saveItem({ state, commit }) {
         commit("setTimeStamp", new Date());
-        // commit("appendItem");
-        api.post(state.item)
+        await api.post(state.item)
             .then(() => {
                 commit("initItem");
-                dispatch("load");
             });
     },
-    updateItem({ state, commit, dispatch}, id) {
-        // commit("updateItem");
-        api.put(id, state.item)
+    async updateItem({ state, commit}, id) {
+        await api.put(id, state.item)
             .then(() => {
                 commit("initItem");
-                dispatch("load");
             });
     },
-    // await dispatch("createPreview", { contentsType });
-    deleteItem({ commit, dispatch }, id) {
-        // commit("updateItem");
-        api.delete(id)
+    async deleteItem({ commit }, id) {
+        await api.delete(id)
             .then(() => {
                 commit("initItem");
-                dispatch("load");
             });
     },
 };
 
 const mutations = {
-    setTest1(state, value) {
-        state.test1 = value;
-    },
-    setIsView(state, value) {
-        state.isView = value;
-    },
     initItem(state) {
         state.item = {
             index: -1,
@@ -115,22 +78,6 @@ const mutations = {
     },
     setTimeStamp(state, value) {
         state.item.timeStamp = value;
-    },
-    appendItem(state) { 
-        state.item.index = state.items.length;
-        state.items.push(state.item);
-    },
-    updateItem(state) {
-        state.items.forEach(item => {
-            if (item.index == state.item.index) {
-                item.name = state.item.name;
-                item.description = state.item.description;
-                return;
-            }
-        });
-    },
-    setItems(state, value) {
-        state.items = value;
     },
 };
 
