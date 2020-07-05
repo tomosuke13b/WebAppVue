@@ -1,12 +1,15 @@
 ﻿import api from "@/models/test/item/api.js";
+import tasks from "@/lib/tasks.js";
 
 const state = {
     item: {
         index: -1,
         name: null,
         description: null,
-        timeStamp: null
+        timeStamp: null,
+        imageIds: []
     },
+    images: []
 }
 
 const getters = {
@@ -19,6 +22,12 @@ const getters = {
     getTimeStamp: state => {
         return state.item.timeStamp;
     },
+    getImageIds: state => {
+        return state.item.imageIds;
+    },
+    getImages: state => {
+        return state.images;
+    },
 }
 
 const actions = {
@@ -26,8 +35,10 @@ const actions = {
         commit("initItem");
         commit("setName", null);
         commit("setDescription", null);
+        commit("setImageIds", []);
+        commit("setImages", []);
     },
-    loadItem({ commit }, id) {
+    loadItem({ commit, dispatch }, id) {
         commit("initItem");
         api.get(id)
             .then((item) => {
@@ -35,10 +46,38 @@ const actions = {
                 commit("setName", item.name);
                 commit("setDescription", item.description);
                 commit("setTimeStamp", item.timeStamp);
+                commit("setImages", item.images);
+                dispatch("loadImage", item.imageIds);
             });
     },
-    async saveItem({ state, commit }) {
+    loadImage({ commit }, ids) {
+        commit("setImages", []);
+
+        Array.from(ids).forEach(id => {
+            api.getImage(id)
+                .then((image) => {
+                    commit("addImage", { id: image.id, contentType: image.contentType, data : image.data});
+                });
+        });
+    },
+    async saveImage({ state, commit }) {
         commit("setTimeStamp", new Date());
+
+        tasks.init();
+
+        Array.from(state.images).forEach(image => {
+            tasks.register(
+                async () => {
+                    await api.postImage(image).then((result) => {
+                        commit("addImageId", result.id);
+                    });
+                }
+            );
+        });
+
+        await tasks.exec();
+    },
+    async saveItem({ state, commit }) {
         await api.post(state.item)
             .then(() => {
                 commit("initItem");
@@ -79,6 +118,32 @@ const mutations = {
     setTimeStamp(state, value) {
         state.item.timeStamp = value;
     },
+    setImageIds(state, imageIds) {
+        state.item.imageIds = imageIds;
+    },
+    setImages(state, images) {
+        state.images = images;
+    },
+    addImageIds(state, imageIds) {
+        if (!state.item.imageIds) state.item.imageIds = [];
+        Array.from(imageIds).forEach(imageId => {
+            state.item.imageIds.push(imageId);
+        });
+    },
+    addImageId(state, imageId) {
+        if (!state.item.imageIds) state.item.imageIds = [];
+        state.item.imageIds.push(imageId);
+    },
+    addImages(state, imageSources) {
+        if (!state.images) state.images = [];
+        Array.from(imageSources).forEach(imageSource => {
+            state.images.push({ id: imageSource.id, preId: state.images.length + 1, imageSource: imageSource.contentType, data: imageSource.data });
+        });
+    },
+    addImage(state, { id, contentType, data }) {
+        if (!state.images) state.images = [];
+        state.images.push({ id: id, preId: state.images.length + 1, contentType: contentType, data: data });
+    }
 };
 
 export default {

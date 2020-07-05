@@ -10,6 +10,9 @@
                 <v-col>
                     <v-btn small color="primary" to="/test/list">List</v-btn>
                 </v-col>
+                <v-col align="center" justify="center">
+                    <ViewImageCarousel :images="images" @onImageClick="onImageClick" />
+                </v-col>
                 <v-col>
                     <Editor 
                         :value="value"
@@ -37,9 +40,10 @@
 
 <script>
     import { Editor } from "@/components/edit";
+    import { ViewImageCarousel } from "@/components/image";
     export default {
         name: "TestDetail",
-        components: { Editor },
+        components: { Editor, ViewImageCarousel },
         props: {
             id: {
                 default: -1,
@@ -59,6 +63,9 @@
             };
         },
         computed: {
+            images() {
+                return this.$store.getters["item/getImages"];
+            },
             name() {
                 return this.$store.getters["item/getName"];
             },
@@ -89,6 +96,9 @@
             this.$store.dispatch("item/loadItem", this.id);
         },
         methods: {
+            onImageClick() {
+
+            },
             onEdit(value) {
                 this.value.name = value.name;
                 this.value.description = value.description;

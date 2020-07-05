@@ -10,6 +10,26 @@
                 <v-col>
                     <v-btn small color="primary" to="/test/list">List</v-btn>
                 </v-col>
+                <v-col align="center" justify="center">
+                    <ViewImageCarousel :images="images" @onImageClick="onImageClick" />
+                </v-col>
+                <v-col>
+                    <v-btn
+                        small
+                        color="primary"
+                        @click="inputFiles"
+                    >
+                        ファイルを選択
+                    </v-btn>
+                    <input
+                        type="file"
+                        accept="image/png,image/jpeg, image/jpg"
+                        @change="uploadImage($event)"
+                        style="display: none;"
+                        ref="input"
+                        :multiple="true"
+                    />
+                </v-col>
                 <v-col>
                     <Editor 
                         :value="value"
@@ -27,9 +47,10 @@
 
 <script>
     import { Editor } from "@/components/edit";
+    import { ViewImageCarousel } from "@/components/image";
     export default {
         name: "TestNew",
-        components: { Editor },
+        components: { Editor, ViewImageCarousel },
 
         props: {
         },
@@ -39,9 +60,13 @@
                     name : "",
                     description : "",
                 },
+                MAX_IMAGE_FILE_SIZE: 5000000,
             };
         },
         computed: {
+            images() {
+                return this.$store.getters["item/getImages"];
+            },
             name() {
                 return this.$store.getters["item/getName"];
             },
@@ -67,14 +92,57 @@
             this.$store.dispatch("item/createItem");
         },
         methods: {
+            inputFiles() {
+                this.$refs.input.click();
+            },
+            uploadImage(event) {
+                let target = event.target;
+                let files = target.files;
+                if (!this.validationImages(files))  return;
+                Array.from(files).forEach(file => {
+                    this.readFileToImage(file);
+                });
+            },
+            validationImages(files) {
+                var validats = [];
+                Array.from(files).forEach(file => {
+                    validats.push(this.validationImage(file));
+                });
+                return validats.find(validat => validat);
+            },
+            validationImage(file) {
+                if (file.type !== "image/jpeg" && file.type !== "image/png") return false;
+                if (file.size > this.MAX_IMAGE_FILE_SIZE) return false;
+                return true;
+            },
+            readFileToImage(file) {
+                console.log(file);
+
+                var func = (imageSource) => {
+                    let contentType = imageSource.split(',')[0];
+                    let data = imageSource.split(',')[1];
+                    this.$store.commit("item/addImage", { contentType: contentType, data: data });
+                };
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                    // func(reader.result.split(',')[1]);
+                    func(reader.result);
+                };
+            },
             onEdit(value) {
                 this.value.name = value.name;
                 this.value.description = value.description;
+            },
+            onImageClick() {
+
             },
             async onSave() {
                 this.$store.commit("item/setName", this.value.name);
                 this.$store.commit("item/setDescription", this.value.description);
 
+                await this.$store.dispatch("item/saveImage");
+                
                 await this.$store.dispatch("item/saveItem");
                 this.$router.push( { name: "testList" } );
             }
