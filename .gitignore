@@ -27,3 +27,4 @@ mssql-db
 obj
 WebAppVue/bin
 bin
+.vs/
