@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using WebAppVue.Models.Entity;
+using WebAppVue.Models.Json;
 
 namespace WebAppVue.Models
 {
@@ -10,21 +13,23 @@ namespace WebAppVue.Models
         public NameModel() {
         }
 
-        public Json.Item[] List() {
+        public Json.Item[] List()
+        {
             using (var db = new TestContext())
             {
                 return db.Names
                     .Where(name => !name.Deleted)
-                    .Select(name => new Json.Item {
+                    .Select(name => new Json.Item
+                    {
                         Id = name.Id,
                         Sort = name.Sort,
                         Name = name.Text,
+                        ImageIds = NameModel.JsonDeserialize<List<int>>(name.ImageIds),
                         TimeStamp = NameModel.ConvertIntToDateTime(name.Date, name.Time)
                     })
                     .ToArray();
             }
         }
-
         public Json.Item Get(Int64 id)
         {
             using (var db = new TestContext())
@@ -39,30 +44,33 @@ namespace WebAppVue.Models
                         Delete = name.Deleted || description.Deleted,
                         Sort = name.Sort,
                         Name = name.Text,
+                        ImageIds = NameModel.JsonDeserialize<List<int>>(name.ImageIds),
                         Date = name.Date,
                         Time = name.Time,
                         Description = description.Text
                     })
                     .FirstOrDefault(item => item.Id == id && !item.Delete);
-                
+
                 return item == null ? null : new Json.Item
                 {
                     Id = item.Id,
                     Sort = item.Sort,
                     Name = item.Name,
+                    ImageIds = item.ImageIds,
                     TimeStamp = NameModel.ConvertIntToDateTime(item.Date, item.Time),
                     Description = item.Description
                 };
             }
         }
 
-        public bool Create(Json.Item item)
+        public long Create(Json.Item item)
         {
             using (var db = new TestContext())
             using (var tran = db.Database.BeginTransaction())
             {
                 var newName = new Entity.TestContext.Name();
                 newName.Text = item.Name;
+                newName.ImageIds = NameModel.JsonSerialize(item.ImageIds);
                 newName.Sort = item.Sort;
                 newName.Date = NameModel.ConvertDateToInt(item.TimeStamp);
                 newName.Time = NameModel.ConvertTimeToInt(item.TimeStamp);
@@ -70,7 +78,7 @@ namespace WebAppVue.Models
                 if (db.SaveChanges() <= 0)
                 {
                     tran.Rollback();
-                    return false;
+                    return -1;
                 }
 
                 var newDescription = new Entity.TestContext.Description();
@@ -80,35 +88,36 @@ namespace WebAppVue.Models
                 if (db.SaveChanges() <= 0)
                 {
                     tran.Rollback();
-                    return false;
+                    return -1;
                 }
 
                 tran.Commit();
-                return true;
+                return newName.Id;
             }
         }
 
-        public bool Update(Int64 id, Json.Item item)
+        public long Update(Int64 id, Json.Item item)
         {
             using (var db = new TestContext())
             {
                 var name = db.Names
                     .Where(name => !name.Deleted)
                     .FirstOrDefault(name => name.Id == id);
-                if (name == null) return false;
+                if (name == null) return -1;
 
                 var description = db.Descriptions
                     .Where(description => !description.Deleted)
                     .FirstOrDefault(description => description.NamesId == id);
-                if (description == null) return false;
+                if (description == null) return -1;
 
                 name.Text = item.Name;
+                name.ImageIds = NameModel.JsonSerialize(item.ImageIds);
                 name.Sort = item.Sort;
                 name.Date = NameModel.ConvertDateToInt(item.TimeStamp);
                 name.Time = NameModel.ConvertTimeToInt(item.TimeStamp);
                 description.Text = item.Description;
-                
-                return db.SaveChanges() > 0;
+
+                return db.SaveChanges() > 0 ? id : -1;
             }
         }
 
@@ -163,5 +172,36 @@ namespace WebAppVue.Models
             catch { }
             return Convert.ToInt32(timeStamp.ToString("HHmmss"));
         }
+
+        private static T JsonDeserialize<T>(string images)
+        {
+            if (images == null) return default(T);
+            try
+            {
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                };
+                return JsonSerializer.Deserialize<T>(images, options);
+            }
+            catch (Exception ex)
+            {
+                return default(T);
+            }
+        }
+
+        private static string JsonSerialize<T>(T images)
+        {
+            if (images == null) return null;
+            try
+            {
+                return JsonSerializer.Serialize(images);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
     }
 }

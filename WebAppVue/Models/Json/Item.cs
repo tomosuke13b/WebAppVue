@@ -11,6 +11,7 @@ namespace WebAppVue.Models.Json
         public Int64? Id { get; set; }
         public int Sort { get; set; }
         public string Name { get; set; }
+        public List<int> ImageIds { get; set; }
         public string Description { get; set; }
         public DateTime TimeStamp { get; set; }
     }

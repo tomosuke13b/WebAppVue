@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebAppVue.Models;
@@ -12,40 +13,38 @@ namespace WebAppVue.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TestController : Controller
+    public class ImageController : Controller
     {
         // GET: api/<controller>
         [HttpGet]
-        public ActionResult<IEnumerable<Item>> Get()
+        public ActionResult<IEnumerable<Image>> Get()
         {
-            // return new string[] { "value1", "value2" };
-            var model = new NameModel();
-            return model.List();
+            return NotFound();
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public ActionResult<Item> Get(Int64 id)
+        public ActionResult<Image> Get(Int64 id)
         {
-            var model = new NameModel();
+            var model = new ImageModel();
             return model.Get(id);
         }
 
         // POST api/<controller>
         [HttpPost]
-        public ActionResult<long> Post(Item value)
+        public ActionResult<Image> Post(Image value)
         {
-            var model = new NameModel();
+            var model = new ImageModel();
             var ret = model.Create(value);
-            if (ret == -1) return NotFound();
+            if (ret == null) return NotFound();
             return ret;
         }
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
-        public ActionResult<long> Put(Int64 id, Item value)
+        public ActionResult<long> Put(Int64 id, Image value)
         {
-            var model = new NameModel();
+            var model = new ImageModel();
             var ret = model.Update(id, value);
             if (ret == -1) return NotFound();
             return ret;
@@ -55,7 +54,7 @@ namespace WebAppVue.Controllers
         [HttpDelete("{id}")]
         public ActionResult<bool> Delete(Int64 id)
         {
-            var model = new NameModel();
+            var model = new ImageModel();
             var ret = model.Delete(id);
             if (!ret) return NotFound();
             return ret;
