@@ -1,5 +1,11 @@
 <template>
     <v-container>
+        <v-btn class="mx-2" absolute left fab dark color="indigo" to="/">
+            <v-icon dark>home</v-icon>
+        </v-btn>
+        <v-btn class="mx-2" absolute right fab dark color="indigo" to="/test/new">
+            <v-icon dark>mdi-plus</v-icon>
+        </v-btn>
         <v-row class="text-center">
             <v-col cols="12">
                 <v-col class="mb-4">
@@ -8,20 +14,11 @@
                     </h1>
                 </v-col>
                 <v-col>
-                    <v-btn small color="primary" to="/">Home</v-btn>
-                </v-col>
-                <v-col>
-                    <v-btn small color="primary" to="/test/new">New</v-btn>
-                </v-col>
-                <v-col>
                     <v-list>
                         <v-list-item
                             v-for="(item, index) in items"
                             :key="index"
                         >
-                            <v-list-item-content>
-                                <v-list-item-title v-text="item.index"></v-list-item-title>
-                            </v-list-item-content>
                             <v-list-item-content>
                                 <v-list-item-title v-text="item.name"></v-list-item-title>
                             </v-list-item-content>
@@ -29,10 +26,14 @@
                                 <v-list-item-title v-text="item.timeStamp"></v-list-item-title>
                             </v-list-item-content>
                             <v-list-item-action>
-                                <v-btn small color="primary" @click="onEdit(item.id)"  >編集</v-btn>
+                                <v-btn fab dark color="primary" @click="onEdit(item.id)"  >
+                                    <v-icon>fas fa-edit</v-icon>
+                                </v-btn>
                             </v-list-item-action>
                             <v-list-item-action>
-                                <v-btn small color="primary" @click="onView(item.id)" >参照</v-btn>
+                                <v-btn fab dark color="primary" @click="onView(item.id)"  >
+                                    <v-icon>fas fa-eye</v-icon>
+                                </v-btn>
                             </v-list-item-action>
 
                         </v-list-item>

@@ -1,14 +1,14 @@
 <template>
     <v-container>
+        <v-btn class="mx-2" absolute left dark color="indigo" to="/test/list">
+            <v-icon dark left>mdi-arrow-left</v-icon>Back
+        </v-btn>
         <v-row class="text-center">
             <v-col cols="12">
                 <v-col class="mb-4">
                     <h1 class="display-2 font-weight-bold mb-3">
                         編集・参照
                     </h1>
-                </v-col>
-                <v-col>
-                    <v-btn small color="primary" to="/test/list">List</v-btn>
                 </v-col>
                 <v-col align="center" justify="center">
                     <ViewImageCarousel :images="images" @onImageClick="onImageClick" />
