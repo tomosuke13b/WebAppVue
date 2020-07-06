@@ -66,6 +66,8 @@ namespace WebAppVue.Models.Entity
             [Key]
             [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
             public Int64 Id { get; set; }
+            [DefaultValue(-1)]
+            public Int64 NamesId { get; set; }
             [DefaultValue(false)]
             public bool Deleted { get; set; }
             public byte[] Data { get; set; }

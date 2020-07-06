@@ -24,7 +24,7 @@ namespace WebAppVue.Models
                         Id = name.Id,
                         Sort = name.Sort,
                         Name = name.Text,
-                        ImageIds = NameModel.JsonDeserialize<List<int>>(name.ImageIds),
+                        ImageIds = NameModel.JsonDeserialize<List<Int64>>(name.ImageIds),
                         TimeStamp = NameModel.ConvertIntToDateTime(name.Date, name.Time)
                     })
                     .ToArray();
@@ -44,7 +44,7 @@ namespace WebAppVue.Models
                         Delete = name.Deleted || description.Deleted,
                         Sort = name.Sort,
                         Name = name.Text,
-                        ImageIds = NameModel.JsonDeserialize<List<int>>(name.ImageIds),
+                        ImageIds = NameModel.JsonDeserialize<List<Int64>>(name.ImageIds),
                         Date = name.Date,
                         Time = name.Time,
                         Description = description.Text
@@ -89,6 +89,22 @@ namespace WebAppVue.Models
                 {
                     tran.Rollback();
                     return -1;
+                }
+
+                var images = db.Images
+                    .Where(image => !image.Deleted)
+                    .Where(image => item.ImageIds.Contains(image.Id));
+                if (images != null)
+                {
+                    foreach (var image in images)
+                    {
+                        image.NamesId = newName.Id;
+                    }
+                    if (db.SaveChanges() <= 0)
+                    {
+                        tran.Rollback();
+                        return -1;
+                    }
                 }
 
                 tran.Commit();
