@@ -1,7 +1,10 @@
 <template>
     <v-container>
-        <v-btn class="mx-2" absolute left dark color="indigo" to="/test/list">
-            <v-icon dark left>mdi-arrow-left</v-icon>Back
+        <v-btn class="mx-2" fixed right fab dark style="bottom: 80px" color="indigo" @click="onSave" :disabled="isView">
+            <v-icon dark>fa-save</v-icon>
+        </v-btn>
+        <v-btn class="mx-2" fixed right fab dark style="bottom: 160px" color="indigo" @click="onDelete" :disabled="isView">
+            <v-icon dark>fa-trash</v-icon>
         </v-btn>
         <v-row class="text-center">
             <v-col cols="12">
@@ -26,12 +29,6 @@
                         v-model="timestamp"
                         :readonly="true"
                     ></v-text-field>
-                </v-col>
-                <v-col>
-                    <v-btn small color="primary" @click="onSave" :disabled="isView">Save</v-btn>
-                </v-col>
-                <v-col>
-                    <v-btn small color="primary" @click="onDelete" :disabled="isView">Delete</v-btn>
                 </v-col>
             </v-col>
         </v-row>

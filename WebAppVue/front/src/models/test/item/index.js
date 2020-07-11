@@ -1,4 +1,4 @@
-﻿import api from "@/models/test/item/api.js";
+﻿import api from "@/models/test/api.js";
 import tasks from "@/lib/tasks.js";
 
 const state = {
@@ -52,10 +52,11 @@ const actions = {
     },
     loadImage({ commit }, ids) {
         commit("setImages", []);
-
+        if(!ids) return;
         Array.from(ids).forEach(id => {
             api.getImage(id)
                 .then((image) => {
+                    if(!image) return;
                     commit("addImage", { id: image.id, contentType: image.contentType, data : image.data});
                 });
         });

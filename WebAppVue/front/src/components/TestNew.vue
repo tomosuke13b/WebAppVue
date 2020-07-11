@@ -1,7 +1,7 @@
 <template>
     <v-container>
-        <v-btn class="mx-2" absolute left dark color="indigo" to="/test/list">
-            <v-icon dark left>mdi-arrow-left</v-icon>Back
+        <v-btn class="mx-2" fixed right fab dark style="bottom: 80px" color="indigo" @click="onSave">
+            <v-icon dark>fa-save</v-icon>
         </v-btn>
         <v-row class="text-center">
             <v-col cols="12">
@@ -36,9 +36,6 @@
                         :isView="false"
                         @onEdit="onEdit"
                     />
-                </v-col>
-                <v-col>
-                    <v-btn small color="primary" @click="onSave">Save</v-btn>
                 </v-col>
             </v-col>
         </v-row>
@@ -116,18 +113,16 @@
                 return true;
             },
             readFileToImage(file) {
-                console.log(file);
-
                 var func = (imageSource) => {
-                    let contentType = imageSource.split(',')[0];
-                    let data = imageSource.split(',')[1];
+                    let contentType = imageSource[0];
+                    let data = imageSource[1];
                     this.$store.commit("item/addImage", { contentType: contentType, data: data });
                 };
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
                 reader.onload = () => {
                     // func(reader.result.split(',')[1]);
-                    func(reader.result);
+                    func(reader.result.split(','));
                 };
             },
             onEdit(value) {
