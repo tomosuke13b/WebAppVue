@@ -8,7 +8,7 @@
             </div>
         </v-card-title>
         <v-card-actions>
-            <v-btn fab dark color="primary" @click="onEdit"  >
+            <v-btn fab dark color="indigo" @click="onEdit"  >
                 <v-icon>fas fa-edit</v-icon>
             </v-btn>
         </v-card-actions>

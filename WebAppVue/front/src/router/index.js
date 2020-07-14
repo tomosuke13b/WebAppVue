@@ -4,6 +4,7 @@ import TestList from "@/components/TestList.vue";
 import TestNew from "@/components/TestNew.vue";
 import TestDetail from "@/components/TestDetail.vue";
 import TestHome from "@/components/TestHome.vue";
+import TestInfo from "@/components/TestInfo.vue";
 
 Vue.use(VueRouter);
 
@@ -13,6 +14,11 @@ const routes = [
         path: "/",
         name: "testHome",
         component: TestHome,
+    },
+    {
+        path: "/test/info",
+        name: "testInfo",
+        component: TestInfo,
     },
     {
         path: "/test/list",
@@ -39,7 +45,13 @@ const routes = [
 
 const router = new VueRouter({
     mode: "history",
-    routes
+    routes,
+    scrollBehavior (to, from, savedPosition) {
+        console.log(to);
+        console.log(from);
+        console.log(savedPosition);
+        return { x: 0, y: 0 }
+    }
 });
 
 export default router;

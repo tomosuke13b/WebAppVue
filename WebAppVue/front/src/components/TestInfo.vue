@@ -4,7 +4,7 @@
             <v-col cols="12">
                 <v-col class="mb-4">
                     <h1 class="display-2 font-weight-bold mb-3">
-                        ホーム
+                        インフォ
                     </h1>
                 </v-col>
             </v-col>
@@ -14,7 +14,7 @@
 
 <script>
     export default {
-        name: 'TestHome',
+        name: 'TestInfo',
 
         data: () => ({
         }),

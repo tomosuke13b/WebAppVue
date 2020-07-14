@@ -14,9 +14,9 @@
       <v-icon>fa-list</v-icon>
     </v-btn>
 
-    <v-btn value="nearby">
-      <span>Nearby</span>
-      <v-icon>fa-map-marker</v-icon>
+    <v-btn value="info"  to="/test/info">
+      <span>Info</span>
+      <v-icon>fa-exclamation-circle</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>
