@@ -26,5 +26,6 @@ WebAppVue/front/__.gitignore
 mssql-db
 obj
 WebAppVue/bin
+WebAppVue/obj
 bin
 .vs/
