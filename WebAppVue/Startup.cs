@@ -37,7 +37,8 @@ namespace WebAppVue
                                           .AllowAnyMethod()
                                           .AllowAnyHeader()
                                           .AllowCredentials()
-                                          .WithOrigins(new string[] { "http://localhost:8080" });
+                                          .SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+                                          //.WithOrigins(new string[] { "http://localhost:8080" });
                                   });
             });
             services.AddAntiforgery(options =>
