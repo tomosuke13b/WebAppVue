@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace WebAppVue
 {
@@ -47,6 +50,11 @@ namespace WebAppVue
                 options.HeaderName = "XSRF-TOKEN";
                 options.SuppressXFrameOptionsHeader = false;
             });
+
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = @"front/dist";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +72,7 @@ namespace WebAppVue
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSpaStaticFiles();
 
             app.UseRouting();
 
@@ -75,7 +84,58 @@ namespace WebAppVue
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    //pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller}/{action=Index}/{id?}");
+            });
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "front";
+                if (env.IsDevelopment())
+                {
+                    // 開発環境では npm run serve をして 8080 ポートへ自動的にリダイレクトしてくれるようにする。
+                    spa.UseProxyToSpaDevelopmentServer(async () =>
+                    {
+                        var pi = new ProcessStartInfo
+                        {
+                            FileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "cmd" : "yarn",
+                            Arguments = $"{(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "/c yarn " : "")} serve",
+                            WorkingDirectory = "front",
+                            RedirectStandardError = true,
+                            RedirectStandardInput = true,
+                            RedirectStandardOutput = true,
+                            UseShellExecute = false,
+                        };
+                        var p = Process.Start(pi);
+                        var lf = app.ApplicationServices.GetService<ILoggerFactory>();
+                        var logger = lf.CreateLogger("npm");
+                        var tcs = new TaskCompletionSource<int>();
+                        _ = Task.Run(() =>
+                        {
+                            var line = "";
+                            while ((line = p.StandardOutput.ReadLine()) != null)
+                            {
+                                if (line.Contains("DONE  Compiled successfully in ")) // 開発用サーバーの起動待ち
+                                {
+                                    tcs.SetResult(0);
+                                }
+
+                                logger.LogInformation(line);
+                            }
+                        });
+                        _ = Task.Run(() =>
+                        {
+                            var line = "";
+                            while ((line = p.StandardError.ReadLine()) != null)
+                            {
+                                //logger.LogError(line);
+                                //logger.LogDebug(line);
+                                logger.LogWarning(line);
+                            }
+                        });
+                        await Task.WhenAny(Task.Delay(20000), tcs.Task);
+                        return new Uri("http://localhost:8080");
+                    });
+                }
             });
         }
     }
