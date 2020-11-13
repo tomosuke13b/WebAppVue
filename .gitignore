@@ -29,3 +29,5 @@ WebAppVue/bin
 WebAppVue/obj
 bin
 .vs/
+*.user
+*.pubxml
