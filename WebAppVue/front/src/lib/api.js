@@ -1,7 +1,7 @@
 ﻿import axios from "axios";
 import cookie from "js-cookie";
 
-axios.defaults.baseURL = 'https://localhost:9443/api';
+//axios.defaults.baseURL = 'https://localhost:9443/api';
 
 const api = axios.create({
     headers: {
