@@ -8,65 +8,57 @@ using WebAppVue.Models.Json;
 
 namespace WebAppVue.Models
 {
-    public class NameModel
+    public class NameModel : BaseModel
     {
-        public NameModel() {
-        }
+        public NameModel(TestContext context) : base(context) { }
 
         public Json.Item[] List()
         {
-            using (var db = new TestContext())
-            {
-                return db.Names
-                    .Where(name => !name.Deleted)
-                    .Select(name => new Json.Item
-                    {
-                        Id = name.Id,
-                        Sort = name.Sort,
-                        Name = name.Text,
-                        ImageIds = NameModel.JsonDeserialize<List<Int64>>(name.ImageIds),
-                        TimeStamp = NameModel.ConvertIntToDateTime(name.Date, name.Time)
-                    })
-                    .ToArray();
-            }
+            return this._context.Names
+                .Where(name => !name.Deleted)
+                .Select(name => new Json.Item
+                {
+                    Id = name.Id,
+                    Sort = name.Sort,
+                    Name = name.Text,
+                    ImageIds = NameModel.JsonDeserialize<List<Int64>>(name.ImageIds),
+                    TimeStamp = NameModel.ConvertIntToDateTime(name.Date, name.Time)
+                })
+                .ToArray();
         }
         public Json.Item Get(Int64 id)
         {
-            using (var db = new TestContext())
-            {
-                var item = db.Names.Join(
-                    db.Descriptions,
-                    name => name.Id,
-                    descriptions => descriptions.NamesId,
-                    (name, description) => new
-                    {
-                        Id = name.Id,
-                        Delete = name.Deleted || description.Deleted,
-                        Sort = name.Sort,
-                        Name = name.Text,
-                        ImageIds = NameModel.JsonDeserialize<List<Int64>>(name.ImageIds),
-                        Date = name.Date,
-                        Time = name.Time,
-                        Description = description.Text
-                    })
-                    .FirstOrDefault(item => item.Id == id && !item.Delete);
-
-                return item == null ? null : new Json.Item
+            var item = this._context.Names.Join(
+                this._context.Descriptions,
+                name => name.Id,
+                descriptions => descriptions.NamesId,
+                (name, description) => new
                 {
-                    Id = item.Id,
-                    Sort = item.Sort,
-                    Name = item.Name,
-                    ImageIds = item.ImageIds,
-                    TimeStamp = NameModel.ConvertIntToDateTime(item.Date, item.Time),
-                    Description = item.Description
-                };
-            }
+                    Id = name.Id,
+                    Delete = name.Deleted || description.Deleted,
+                    Sort = name.Sort,
+                    Name = name.Text,
+                    ImageIds = NameModel.JsonDeserialize<List<Int64>>(name.ImageIds),
+                    Date = name.Date,
+                    Time = name.Time,
+                    Description = description.Text
+                })
+                .FirstOrDefault(item => item.Id == id && !item.Delete);
+
+            return item == null ? null : new Json.Item
+            {
+                Id = item.Id,
+                Sort = item.Sort,
+                Name = item.Name,
+                ImageIds = item.ImageIds,
+                TimeStamp = NameModel.ConvertIntToDateTime(item.Date, item.Time),
+                Description = item.Description
+            };
         }
 
         public long Create(Json.Item item)
         {
-            using (var db = new TestContext())
-            using (var tran = db.Database.BeginTransaction())
+            using (var tran = this._context.Database.BeginTransaction())
             {
                 var newName = new Entity.TestContext.Name();
                 newName.Text = item.Name;
@@ -74,8 +66,8 @@ namespace WebAppVue.Models
                 newName.Sort = item.Sort;
                 newName.Date = NameModel.ConvertDateToInt(item.TimeStamp);
                 newName.Time = NameModel.ConvertTimeToInt(item.TimeStamp);
-                db.Names.Add(newName);
-                if (db.SaveChanges() <= 0)
+                this._context.Names.Add(newName);
+                if (this._context.SaveChanges() <= 0)
                 {
                     tran.Rollback();
                     return -1;
@@ -84,14 +76,14 @@ namespace WebAppVue.Models
                 var newDescription = new Entity.TestContext.Description();
                 newDescription.NamesId = newName.Id;
                 newDescription.Text = item.Description;
-                db.Descriptions.Add(newDescription);
-                if (db.SaveChanges() <= 0)
+                this._context.Descriptions.Add(newDescription);
+                if (this._context.SaveChanges() <= 0)
                 {
                     tran.Rollback();
                     return -1;
                 }
 
-                var images = db.Images
+                var images = this._context.Images
                     .Where(image => !image.Deleted)
                     .Where(image => item.ImageIds.Contains(image.Id));
                 if (images != null)
@@ -100,7 +92,7 @@ namespace WebAppVue.Models
                     {
                         image.NamesId = newName.Id;
                     }
-                    if (db.SaveChanges() <= 0)
+                    if (this._context.SaveChanges() <= 0)
                     {
                         tran.Rollback();
                         return -1;
@@ -114,45 +106,39 @@ namespace WebAppVue.Models
 
         public long Update(Int64 id, Json.Item item)
         {
-            using (var db = new TestContext())
-            {
-                var name = db.Names
-                    .Where(name => !name.Deleted)
-                    .FirstOrDefault(name => name.Id == id);
-                if (name == null) return -1;
+            var name = this._context.Names
+                .Where(name => !name.Deleted)
+                .FirstOrDefault(name => name.Id == id);
+            if (name == null) return -1;
 
-                var description = db.Descriptions
-                    .Where(description => !description.Deleted)
-                    .FirstOrDefault(description => description.NamesId == id);
-                if (description == null) return -1;
+            var description = this._context.Descriptions
+                .Where(description => !description.Deleted)
+                .FirstOrDefault(description => description.NamesId == id);
+            if (description == null) return -1;
 
-                name.Text = item.Name;
-                name.ImageIds = NameModel.JsonSerialize(item.ImageIds);
-                name.Sort = item.Sort;
-                name.Date = NameModel.ConvertDateToInt(item.TimeStamp);
-                name.Time = NameModel.ConvertTimeToInt(item.TimeStamp);
-                description.Text = item.Description;
+            name.Text = item.Name;
+            name.ImageIds = NameModel.JsonSerialize(item.ImageIds);
+            name.Sort = item.Sort;
+            name.Date = NameModel.ConvertDateToInt(item.TimeStamp);
+            name.Time = NameModel.ConvertTimeToInt(item.TimeStamp);
+            description.Text = item.Description;
 
-                return db.SaveChanges() > 0 ? id : -1;
-            }
+            return this._context.SaveChanges() > 0 ? id : -1;
         }
 
         public bool Delete(Int64 id)
         {
-            using (var db = new TestContext())
-            {
-                var name = db.Names
-                    .FirstOrDefault(name => name.Id == id && !name.Deleted);
-                var description = db.Descriptions
-                    .FirstOrDefault(description => description.NamesId == id && !description.Deleted);
-                if (name == null) return false;
-                var timestamp = DateTime.Now;
-                name.Deleted = true;
-                name.Delete_at = timestamp;
-                description.Deleted = true;
-                description.Delete_at = timestamp;
-                return db.SaveChanges() > 0;
-            }
+            var name = this._context.Names
+                .FirstOrDefault(name => name.Id == id && !name.Deleted);
+            var description = this._context.Descriptions
+                .FirstOrDefault(description => description.NamesId == id && !description.Deleted);
+            if (name == null) return false;
+            var timestamp = DateTime.Now;
+            name.Deleted = true;
+            name.Delete_at = timestamp;
+            description.Deleted = true;
+            description.Delete_at = timestamp;
+            return this._context.SaveChanges() > 0;
         }
 
 

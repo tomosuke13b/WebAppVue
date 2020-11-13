@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebAppVue.Models.Entity;
 
 namespace WebAppVue
 {
@@ -48,6 +50,9 @@ namespace WebAppVue
                 options.HeaderName = "XSRF-TOKEN";
                 options.SuppressXFrameOptionsHeader = false;
             });
+
+            services.AddDbContext<TestContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DB")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

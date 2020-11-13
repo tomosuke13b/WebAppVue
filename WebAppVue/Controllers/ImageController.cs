@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebAppVue.Models;
+using WebAppVue.Models.Entity;
 using WebAppVue.Models.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -15,6 +16,13 @@ namespace WebAppVue.Controllers
     [ApiController]
     public class ImageController : Controller
     {
+        private ImageModel _model;
+
+        public ImageController(TestContext context)
+        {
+            this._model = new ImageModel(context);
+        }
+
         // GET: api/<controller>
         [HttpGet]
         public ActionResult<IEnumerable<Image>> Get()
@@ -26,16 +34,14 @@ namespace WebAppVue.Controllers
         [HttpGet("{id}")]
         public ActionResult<Image> Get(Int64 id)
         {
-            var model = new ImageModel();
-            return model.Get(id);
+            return this._model.Get(id);
         }
 
         // POST api/<controller>
         [HttpPost]
         public ActionResult<Image> Post(Image value)
         {
-            var model = new ImageModel();
-            var ret = model.Create(value);
+            var ret = this._model.Create(value);
             if (ret == null) return NotFound();
             return ret;
         }
@@ -44,8 +50,7 @@ namespace WebAppVue.Controllers
         [HttpPut("{id}")]
         public ActionResult<long> Put(Int64 id, Image value)
         {
-            var model = new ImageModel();
-            var ret = model.Update(id, value);
+            var ret = this._model.Update(id, value);
             if (ret == -1) return NotFound();
             return ret;
         }
@@ -54,8 +59,7 @@ namespace WebAppVue.Controllers
         [HttpDelete("{id}")]
         public ActionResult<bool> Delete(Int64 id)
         {
-            var model = new ImageModel();
-            var ret = model.Delete(id);
+            var ret = this._model.Delete(id);
             if (!ret) return NotFound();
             return ret;
         }

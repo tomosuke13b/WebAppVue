@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebAppVue.Models;
+using WebAppVue.Models.Entity;
 using WebAppVue.Models.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -14,29 +15,32 @@ namespace WebAppVue.Controllers
     [ApiController]
     public class TestController : Controller
     {
+        private NameModel _model;
+
+        public TestController(TestContext context)
+        {
+            this._model = new NameModel(context);
+        }
         // GET: api/<controller>
         [HttpGet]
         public ActionResult<IEnumerable<Item>> Get()
         {
             // return new string[] { "value1", "value2" };
-            var model = new NameModel();
-            return model.List();
+            return this._model.List();
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
         public ActionResult<Item> Get(Int64 id)
         {
-            var model = new NameModel();
-            return model.Get(id);
+            return this._model.Get(id);
         }
 
         // POST api/<controller>
         [HttpPost]
         public ActionResult<long> Post(Item value)
         {
-            var model = new NameModel();
-            var ret = model.Create(value);
+            var ret = this._model.Create(value);
             if (ret == -1) return NotFound();
             return ret;
         }
@@ -45,8 +49,7 @@ namespace WebAppVue.Controllers
         [HttpPut("{id}")]
         public ActionResult<long> Put(Int64 id, Item value)
         {
-            var model = new NameModel();
-            var ret = model.Update(id, value);
+            var ret = this._model.Update(id, value);
             if (ret == -1) return NotFound();
             return ret;
         }
@@ -55,8 +58,7 @@ namespace WebAppVue.Controllers
         [HttpDelete("{id}")]
         public ActionResult<bool> Delete(Int64 id)
         {
-            var model = new NameModel();
-            var ret = model.Delete(id);
+            var ret = this._model.Delete(id);
             if (!ret) return NotFound();
             return ret;
         }

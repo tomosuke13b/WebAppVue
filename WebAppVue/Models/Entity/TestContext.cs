@@ -6,23 +6,33 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace WebAppVue.Models.Entity
 {
     public class TestContext : DbContext
     {
+        public TestContext(DbContextOptions<TestContext> options)
+            : base(options)
+        { }
+
         public DbSet<Name> Names { get; set; }
         public DbSet<Description> Descriptions { get; set; }
         public DbSet<Image> Images { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(
-                @"Server=webappvue_mssql;
-                  Database=TestDB;
-                  User ID=sa;Password=1234qwerAS;"
-                );
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer(
+        //        @"Server=webappvue_mssql;
+        //          Database=TestDB;
+        //          User ID=sa;Password=1234qwerAS;"
+        //        );
+        //}
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer(WebAppVue.Startup.Configuration.GetConnectionString("DB"));
+        //}
 
         public class Name
         {
