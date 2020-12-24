@@ -3,21 +3,12 @@
         <v-btn class="mx-2" fixed right fab dark style="bottom: 80px" color="indigo" to="/test/new">
             <v-icon dark>mdi-plus</v-icon>
         </v-btn>
-        <v-row class="text-center">
-            <v-col cols="12">
-                <v-col>
-                    <v-list>
-                        <v-list-item
-                            v-for="(item, index) in items"
-                            :key="index"
-                        >
-                            <v-list-item-content class="py-4">
-                                <ItemCard :item="item" @onEdit="onEdit" @onView="onView" style="padding-bottom: 2px" />
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-spacer></v-spacer>
-                    </v-list>
-                </v-col>
+        <v-row
+            class="text-center"
+            v-for="(item, index) in items"
+            :key="index">
+            <v-col>
+                <ItemCard :item="item" @onEdit="onEdit" @onView="onView" style="padding-bottom: 2px" />
             </v-col>
         </v-row>
     </v-container>
