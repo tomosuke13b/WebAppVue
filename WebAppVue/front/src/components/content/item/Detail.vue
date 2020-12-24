@@ -36,10 +36,9 @@
 </template>
 
 <script>
-    import { Editor } from "@/components/edit";
-    import { ViewImageCarousel } from "@/components/image";
+    import { Editor, ViewImageCarousel } from "./common";
     export default {
-        name: "TestDetail",
+        name: "Detail",
         components: { Editor, ViewImageCarousel },
         props: {
             id: {

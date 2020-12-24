@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import { ViewImage } from "@/components/image";
+    import { ViewImage } from "./image";
     export default {
     name: "ViewImageCarousel",
     components: { ViewImage },

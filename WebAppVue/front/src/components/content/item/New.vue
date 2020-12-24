@@ -43,10 +43,9 @@
 </template>
 
 <script>
-    import { Editor } from "@/components/edit";
-    import { ViewImageCarousel } from "@/components/image";
+    import { Editor, ViewImageCarousel } from "./common";
     export default {
-        name: "TestNew",
+        name: "New",
         components: { Editor, ViewImageCarousel },
 
         props: {

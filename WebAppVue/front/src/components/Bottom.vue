@@ -9,12 +9,12 @@
       <v-icon>fa-home</v-icon>
     </v-btn>
 
-    <v-btn value="list" to="/test/list">
+    <v-btn value="list" to="/list">
       <span>List</span>
       <v-icon>fa-list</v-icon>
     </v-btn>
 
-    <v-btn value="info"  to="/test/info">
+    <v-btn value="info"  to="/info">
       <span>Info</span>
       <v-icon>fa-exclamation-circle</v-icon>
     </v-btn>

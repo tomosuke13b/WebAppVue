@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-btn class="mx-2" fixed right fab dark style="bottom: 80px" color="indigo" to="/test/new">
+        <v-btn class="mx-2" fixed right fab dark style="bottom: 80px" color="indigo" to="/item/new">
             <v-icon dark>mdi-plus</v-icon>
         </v-btn>
         <v-row
@@ -15,10 +15,10 @@
 </template>
 
 <script>
-    import { ItemCard } from "@/components/card";
+    import { ItemCard } from "./card";
 
     export default {
-        name: "TestList",
+        name: "List",
         components: { ItemCard },
 
         props: {
@@ -36,11 +36,11 @@
         methods: {
             onEdit(id) {
                 if(id === undefined || id == -1) return;
-                this.$router.push({ name: "testDetail", params: { id: id, isView: false } });
+                this.$router.push({ name: "detail", params: { id: id, isView: false } });
             },
             onView(id) {
                 if(id === undefined || id == -1) return;
-                this.$router.push({ name: "testDetail", params: { id: id, isView: true } });
+                this.$router.push({ name: "detail", params: { id: id, isView: true } });
             }
         }
     }

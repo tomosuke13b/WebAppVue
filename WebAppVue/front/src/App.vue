@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { Header, Bottom } from "@/components/main";
+import { Header, Bottom } from "@/components";
 
 export default {
   name: 'App',
