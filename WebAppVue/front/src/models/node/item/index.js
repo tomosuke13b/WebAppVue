@@ -28,6 +28,9 @@ const getters = {
     images: state => {
         return state.images;
     },
+    isImage: state => {
+        return (!state.images ? false : 0 < state.images.length);
+    },
 }
 
 const actions = {

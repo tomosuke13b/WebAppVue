@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-btn class="mx-2" fixed right fab dark style="bottom: 80px" color="indigo" @click="onSave" :disabled="isView">
+        <v-btn class="mx-2" fixed right fab dark style="bottom: 80px" color="indigo" @click="onSave" :disabled="isView || !isSave">
             <v-icon dark>fa-save</v-icon>
         </v-btn>
         <v-btn class="mx-2" fixed right fab dark style="bottom: 160px" color="indigo" @click="onDelete" :disabled="isView">
@@ -72,7 +72,10 @@
                 get() {
                     return this.$store.getters["item/timeStamp"];
                 },
-            }
+            },
+            isSave() {
+                return this.value.name;
+            },
         },
         watch: {
             name(value) {

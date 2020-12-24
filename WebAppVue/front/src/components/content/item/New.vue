@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-btn class="mx-2" fixed right fab dark style="bottom: 80px" color="indigo" @click="onSave">
+        <v-btn class="mx-2" fixed right fab dark style="bottom: 80px" color="indigo" @click="onSave" :disabled="!isSave">
             <v-icon dark>fa-save</v-icon>
         </v-btn>
         <v-row class="text-center">
@@ -62,6 +62,12 @@
         computed: {
             images() {
                 return this.$store.getters["item/images"];
+            },
+            isImage() {
+                return this.$store.getters["item/isImage"];
+            },
+            isSave() {
+                return this.isImage && this.value.name;
             },
             name() {
                 return this.$store.getters["item/name"];
