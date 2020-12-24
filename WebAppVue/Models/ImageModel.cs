@@ -10,7 +10,7 @@ namespace WebAppVue.Models
 {
     public class ImageModel : BaseModel
     {
-        public ImageModel(TestContext context) : base(context) { }
+        public ImageModel(WebAppContext context) : base(context) { }
 
         public Json.Image Get(Int64 id)
         {
@@ -29,7 +29,7 @@ namespace WebAppVue.Models
         {
             using (var tran = this._context.Database.BeginTransaction())
             {
-                var newimage = new Entity.TestContext.Image();
+                var newimage = new Entity.Context.Image();
                 newimage.Data = item.Data;
                 newimage.ContentType = item.ContentType;
                 this._context.Images.Add(newimage);

@@ -1,7 +1,7 @@
 ﻿import Vue from "vue";
 import Vuex from "vuex";
-import item from "./models/test/item";
-import list from "./models/test/list";
+import item from "./models/node/item";
+import list from "./models/node/list";
 
 Vue.use(Vuex);
 

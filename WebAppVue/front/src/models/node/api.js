@@ -3,34 +3,34 @@
 export default {
     gets() {
         return api({
-            endpoint: "/test",
+            endpoint: "/node",
             method: "GET",
         });
     },
     get(id) {
         return api({
-            endpoint: "/test/" + id,
+            endpoint: "/node/" + id,
             method: "GET",
         });
     },
     post(body) {
         console.log(body);
         return api({
-            endpoint: "/test",
+            endpoint: "/node",
             method: "POST",
             body
         });
     },
     put(id, body) {
         return api({
-            endpoint: "/test/" + id,
+            endpoint: "/node/" + id,
             method: "PUT",
             body
         });
     },
     delete(id) {
         return api({
-            endpoint: "/test/" + id,
+            endpoint: "/node/" + id,
             method: "DELETE",
         });
     },

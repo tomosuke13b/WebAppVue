@@ -10,9 +10,9 @@ namespace WebAppVue.Models
 {
     public class BaseModel
     {
-        protected readonly TestContext _context;
+        protected readonly WebAppContext _context;
 
-        public BaseModel(TestContext context = null)
+        public BaseModel(WebAppContext context = null)
         {
             this._context = context;
         }

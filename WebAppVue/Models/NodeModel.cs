@@ -8,27 +8,27 @@ using WebAppVue.Models.Json;
 
 namespace WebAppVue.Models
 {
-    public class NameModel : BaseModel
+    public class NodeModel : BaseModel
     {
-        public NameModel(TestContext context) : base(context) { }
+        public NodeModel(WebAppContext context) : base(context) { }
 
         public Json.Item[] List()
         {
-            return this._context.Names
+            return this._context.Nodes
                 .Where(name => !name.Deleted)
                 .Select(name => new Json.Item
                 {
                     Id = name.Id,
                     Sort = name.Sort,
                     Name = name.Text,
-                    ImageIds = NameModel.JsonDeserialize<List<Int64>>(name.ImageIds),
-                    TimeStamp = NameModel.ConvertIntToDateTime(name.Date, name.Time)
+                    ImageIds = NodeModel.JsonDeserialize<List<Int64>>(name.ImageIds),
+                    TimeStamp = NodeModel.ConvertIntToDateTime(name.Date, name.Time)
                 })
                 .ToArray();
         }
         public Json.Item Get(Int64 id)
         {
-            var item = this._context.Names.Join(
+            var item = this._context.Nodes.Join(
                 this._context.Descriptions,
                 name => name.Id,
                 descriptions => descriptions.NamesId,
@@ -38,7 +38,7 @@ namespace WebAppVue.Models
                     Delete = name.Deleted || description.Deleted,
                     Sort = name.Sort,
                     Name = name.Text,
-                    ImageIds = NameModel.JsonDeserialize<List<Int64>>(name.ImageIds),
+                    ImageIds = NodeModel.JsonDeserialize<List<Int64>>(name.ImageIds),
                     Date = name.Date,
                     Time = name.Time,
                     Description = description.Text
@@ -51,7 +51,7 @@ namespace WebAppVue.Models
                 Sort = item.Sort,
                 Name = item.Name,
                 ImageIds = item.ImageIds,
-                TimeStamp = NameModel.ConvertIntToDateTime(item.Date, item.Time),
+                TimeStamp = NodeModel.ConvertIntToDateTime(item.Date, item.Time),
                 Description = item.Description
             };
         }
@@ -60,21 +60,21 @@ namespace WebAppVue.Models
         {
             using (var tran = this._context.Database.BeginTransaction())
             {
-                var newName = new Entity.TestContext.Name();
-                newName.Text = item.Name;
-                newName.ImageIds = NameModel.JsonSerialize(item.ImageIds);
-                newName.Sort = item.Sort;
-                newName.Date = NameModel.ConvertDateToInt(item.TimeStamp);
-                newName.Time = NameModel.ConvertTimeToInt(item.TimeStamp);
-                this._context.Names.Add(newName);
+                var newNode = new Entity.Context.Node();
+                newNode.Text = item.Name;
+                newNode.ImageIds = NodeModel.JsonSerialize(item.ImageIds);
+                newNode.Sort = item.Sort;
+                newNode.Date = NodeModel.ConvertDateToInt(item.TimeStamp);
+                newNode.Time = NodeModel.ConvertTimeToInt(item.TimeStamp);
+                this._context.Nodes.Add(newNode);
                 if (this._context.SaveChanges() <= 0)
                 {
                     tran.Rollback();
                     return -1;
                 }
 
-                var newDescription = new Entity.TestContext.Description();
-                newDescription.NamesId = newName.Id;
+                var newDescription = new Entity.Context.Description();
+                newDescription.NamesId = newNode.Id;
                 newDescription.Text = item.Description;
                 this._context.Descriptions.Add(newDescription);
                 if (this._context.SaveChanges() <= 0)
@@ -90,7 +90,7 @@ namespace WebAppVue.Models
                 {
                     foreach (var image in images)
                     {
-                        image.NamesId = newName.Id;
+                        image.NamesId = newNode.Id;
                     }
                     if (this._context.SaveChanges() <= 0)
                     {
@@ -100,13 +100,13 @@ namespace WebAppVue.Models
                 }
 
                 tran.Commit();
-                return newName.Id;
+                return newNode.Id;
             }
         }
 
         public long Update(Int64 id, Json.Item item)
         {
-            var name = this._context.Names
+            var name = this._context.Nodes
                 .Where(name => !name.Deleted)
                 .FirstOrDefault(name => name.Id == id);
             if (name == null) return -1;
@@ -117,10 +117,10 @@ namespace WebAppVue.Models
             if (description == null) return -1;
 
             name.Text = item.Name;
-            name.ImageIds = NameModel.JsonSerialize(item.ImageIds);
+            name.ImageIds = NodeModel.JsonSerialize(item.ImageIds);
             name.Sort = item.Sort;
-            name.Date = NameModel.ConvertDateToInt(item.TimeStamp);
-            name.Time = NameModel.ConvertTimeToInt(item.TimeStamp);
+            name.Date = NodeModel.ConvertDateToInt(item.TimeStamp);
+            name.Time = NodeModel.ConvertTimeToInt(item.TimeStamp);
             description.Text = item.Description;
 
             return this._context.SaveChanges() > 0 ? id : -1;
@@ -128,14 +128,14 @@ namespace WebAppVue.Models
 
         public bool Delete(Int64 id)
         {
-            var name = this._context.Names
+            var node = this._context.Nodes
                 .FirstOrDefault(name => name.Id == id && !name.Deleted);
             var description = this._context.Descriptions
                 .FirstOrDefault(description => description.NamesId == id && !description.Deleted);
-            if (name == null) return false;
+            if (node == null) return false;
             var timestamp = DateTime.Now;
-            name.Deleted = true;
-            name.Delete_at = timestamp;
+            node.Deleted = true;
+            node.Delete_at = timestamp;
             description.Deleted = true;
             description.Delete_at = timestamp;
             return this._context.SaveChanges() > 0;
@@ -188,6 +188,7 @@ namespace WebAppVue.Models
             }
             catch (Exception ex)
             {
+                // ToDo: エラー通知
                 return default(T);
             }
         }
@@ -201,6 +202,7 @@ namespace WebAppVue.Models
             }
             catch (Exception ex)
             {
+                // ToDo: エラー通知
                 return null;
             }
         }

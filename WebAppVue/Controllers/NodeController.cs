@@ -13,13 +13,13 @@ namespace WebAppVue.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TestController : Controller
+    public class NodeController : Controller
     {
-        private NameModel _model;
+        private NodeModel _model;
 
-        public TestController(TestContext context)
+        public NodeController(WebAppContext context)
         {
-            this._model = new NameModel(context);
+            this._model = new NodeModel(context);
         }
         // GET: api/<controller>
         [HttpGet]

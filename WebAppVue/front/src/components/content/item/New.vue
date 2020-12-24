@@ -56,7 +56,7 @@
                     name : "",
                     description : "",
                 },
-                MAX_IMAGE_FILE_SIZE: 5000000,
+                MAX_IMAGE_FILE_SIZE: 50000000,
             };
         },
         computed: {

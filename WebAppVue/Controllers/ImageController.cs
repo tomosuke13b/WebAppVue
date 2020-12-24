@@ -18,7 +18,7 @@ namespace WebAppVue.Controllers
     {
         private ImageModel _model;
 
-        public ImageController(TestContext context)
+        public ImageController(WebAppContext context)
         {
             this._model = new ImageModel(context);
         }

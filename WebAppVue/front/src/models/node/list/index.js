@@ -1,4 +1,4 @@
-﻿import api from "@/models/test/api.js";
+﻿import api from "../api.js";
 import tasks from "@/lib/tasks.js";
 
 const state = {
@@ -70,7 +70,7 @@ const mutations = {
     },
     setBlankImage(state, { namesId }) {
         let index = state.items.findIndex(item => item.id == namesId);
-        state.items[index].blankImage = require("@/models/test/list/noImage.png");
+        state.items[index].blankImage = require("@/models/node/list/noImage.png");
     },
     setIsImageLoaded(state, { namesId, isImageLoaded }) {
         let index = state.items.findIndex(item => item.id == namesId);

@@ -51,7 +51,7 @@ namespace WebAppVue
                 options.SuppressXFrameOptionsHeader = false;
             });
 
-            services.AddDbContext<TestContext>(options =>
+            services.AddDbContext<WebAppContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DB")));
         }
 

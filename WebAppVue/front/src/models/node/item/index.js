@@ -1,4 +1,4 @@
-﻿import api from "@/models/test/api.js";
+﻿import api from "../api.js";
 import tasks from "@/lib/tasks.js";
 
 const state = {
