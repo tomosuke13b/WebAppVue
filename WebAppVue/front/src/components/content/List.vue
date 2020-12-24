@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-btn class="mx-2" fixed right fab dark style="bottom: 80px" color="indigo" to="/item/new">
+        <v-btn class="mx-2" fixed right fab dark style="bottom: 80px" color="indigo" @click="newItem">
             <v-icon dark>mdi-plus</v-icon>
         </v-btn>
         <v-row
@@ -41,6 +41,9 @@
             onView(id) {
                 if(id === undefined || id == -1) return;
                 this.$router.push({ name: "detail", params: { id: id, isView: true } });
+            },
+            newItem() {
+                this.$router.push( { name: "new" } );
             }
         }
     }

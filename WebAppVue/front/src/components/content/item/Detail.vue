@@ -104,11 +104,11 @@
                 this.$store.commit("item/setDescription", this.value.description);
 
                 await this.$store.dispatch("item/updateItem", this.id);
-                this.$router.push( { name: "testList" } );
+                this.$router.push( { name: "list" } );
             },
             async onDelete() {
                 await this.$store.dispatch("item/deleteItem", this.id);
-                this.$router.push( { name: "testList" } );
+                this.$router.push( { name: "list" } );
             }
         }
     }

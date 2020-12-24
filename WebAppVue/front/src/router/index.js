@@ -39,7 +39,7 @@ const routes = [
         }
     },
     {
-        path: "/item/new",
+        path: "/new",
         name: "new",
         component: New
     }

@@ -138,7 +138,7 @@
                 await this.$store.dispatch("item/saveImage");
                 
                 await this.$store.dispatch("item/saveItem");
-                this.$router.push( { name: "testList" } );
+                this.$router.push( { name: "list" } );
             }
         }
     }
