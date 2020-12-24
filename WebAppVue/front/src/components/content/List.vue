@@ -27,7 +27,7 @@
         }),
         computed: {
             items() {
-                return this.$store.getters["list/getItems"];
+                return this.$store.getters["list/items"];
             },
         },
         mounted() {

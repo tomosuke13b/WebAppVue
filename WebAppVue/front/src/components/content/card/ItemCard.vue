@@ -40,7 +40,7 @@
             loadImage() {
                 setTimeout(
                     () => {
-                        let isImageLoaded = this.$store.getters["list/getIsImageLoaded"](this.item.id);
+                        let isImageLoaded = this.$store.getters["list/isImageLoaded"](this.item.id);
                         if(!isImageLoaded) {
                             this.loadImage();
                             return;
@@ -50,9 +50,9 @@
                 );
             },
             getImage() {
-                let image = this.$store.getters["list/getImage"](this.item.id);
+                let image = this.$store.getters["list/image"](this.item.id);
                 if(image === undefined) {
-                    let blankImage = this.$store.getters["list/getBlankImage"](this.item.id);
+                    let blankImage = this.$store.getters["list/blankImage"](this.item.id);
                     return blankImage;
                 }
                 if(!image.contentType) return "";

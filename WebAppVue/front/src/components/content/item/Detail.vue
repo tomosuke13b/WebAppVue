@@ -60,17 +60,17 @@
         },
         computed: {
             images() {
-                return this.$store.getters["item/getImages"];
+                return this.$store.getters["item/images"];
             },
             name() {
-                return this.$store.getters["item/getName"];
+                return this.$store.getters["item/name"];
             },
             description() {
-                return this.$store.getters["item/getDescription"];
+                return this.$store.getters["item/description"];
             },
             timestamp: {
                 get() {
-                    return this.$store.getters["item/getTimeStamp"];
+                    return this.$store.getters["item/timeStamp"];
                 },
             }
         },

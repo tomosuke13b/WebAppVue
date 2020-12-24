@@ -13,19 +13,19 @@ const state = {
 }
 
 const getters = {
-    getName: state => { 
+    name: state => { 
         return state.item.name;
     },
-    getDescription: state => {
+    description: state => {
         return state.item.description;
     },
-    getTimeStamp: state => {
+    timeStamp: state => {
         return state.item.timeStamp;
     },
-    getImageIds: state => {
+    imageIds: state => {
         return state.item.imageIds;
     },
-    getImages: state => {
+    images: state => {
         return state.images;
     },
 }

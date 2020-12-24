@@ -6,18 +6,18 @@ const state = {
 }
 
 const getters = {
-    getItems: state => { 
+    items: state => { 
         return state.items;
     },
-    getImage: state => id => {
+    image: state => id => {
         let index = state.items.findIndex(item => item.id == id);
         return state.items[index].image;
     },
-    getBlankImage: state => id => {
+    blankImage: state => id => {
         let index = state.items.findIndex(item => item.id == id);
         return state.items[index].blankImage;
     },
-    getIsImageLoaded: state => id => {
+    isImageLoaded: state => id => {
         let index = state.items.findIndex(item => item.id == id);
         return state.items[index].isImageLoaded;
 
