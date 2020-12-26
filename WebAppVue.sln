@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAppVue", "WebAppVue\WebAppVue.csproj", "{D22EF26C-FC79-448B-8B2F-FD5F64875170}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAppVue", "app\WebAppVue.csproj", "{D22EF26C-FC79-448B-8B2F-FD5F64875170}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CBC05F03-C9F8-4992-ACED-E07A825785EA}"
 EndProject

@@ -6,7 +6,7 @@ services:
     container_name: webappvue_app
     build:
       context: .
-      dockerfile: WebAppVue/Dockerfile
+      dockerfile: app/Dockerfile
     ports:
       - 9080:80
       - 9443:443
@@ -14,7 +14,7 @@ services:
   mssql:
     container_name: webappvue_mssql
     build:
-      context: ./WebAppVue/Container/mssql
+      context: ./app/Container/mssql
       dockerfile: Dockerfile
     environment:
       ACCEPT_EULA: "Y"
