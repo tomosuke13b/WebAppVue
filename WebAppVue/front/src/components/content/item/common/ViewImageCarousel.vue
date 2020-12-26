@@ -14,8 +14,8 @@
 </template>
 
 <script>
-    import { ViewImage } from "./image";
-    export default {
+import { ViewImage } from "./image";
+export default {
     name: "ViewImageCarousel",
     components: { ViewImage },
     props: {
@@ -43,7 +43,7 @@
             this.$emit("onLoadError");
         }
     }
-    };
+};
 </script>
 
 <style scoped>

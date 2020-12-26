@@ -16,56 +16,56 @@
 </template>
 
 <script>
-    export default {
-        name: "ItemCard",
+export default {
+    name: "ItemCard",
 
-        props: {
-            item: {
-                type: Object,
-                default: null
-            },
+    props: {
+        item: {
+            type: Object,
+            default: null
         },
+    },
 
-        data() {
-            return {
-                imageData: ""
-            };
+    data() {
+        return {
+            imageData: ""
+        };
+    },
+    computed: {
+    },
+    mounted() {
+        this.loadImage();
+    },
+    methods: {
+        loadImage() {
+            setTimeout(
+                () => {
+                    let isImageLoaded = this.$store.getters["list/isImageLoaded"](this.item.id);
+                    if(!isImageLoaded) {
+                        this.loadImage();
+                        return;
+                    }
+                    this.imageData = this.getImage();
+                }, 100
+            );
         },
-        computed: {
-        },
-        mounted() {
-            this.loadImage();
-        },
-        methods: {
-            loadImage() {
-                setTimeout(
-                    () => {
-                        let isImageLoaded = this.$store.getters["list/isImageLoaded"](this.item.id);
-                        if(!isImageLoaded) {
-                            this.loadImage();
-                            return;
-                        }
-                        this.imageData = this.getImage();
-                    }, 100
-                );
-            },
-            getImage() {
-                let image = this.$store.getters["list/image"](this.item.id);
-                if(image === undefined) {
-                    let blankImage = this.$store.getters["list/blankImage"](this.item.id);
-                    return blankImage;
-                }
-                if(!image.contentType) return "";
-                return image.contentType + "," + image.data;
-            },
-            onEdit() {
-                this.$emit("onEdit", this.item.id);
-            },
-            onView() {
-                this.$emit("onView", this.item.id);
+        getImage() {
+            let image = this.$store.getters["list/image"](this.item.id);
+            if(image === undefined) {
+                let blankImage = this.$store.getters["list/blankImage"](this.item.id);
+                return blankImage;
             }
+            if(!image.contentType) return "";
+            return image.contentType + "," + image.data;
         },
-        watch: {
+        onEdit() {
+            this.$emit("onEdit", this.item.id);
         },
-    }
+        onView() {
+            this.$emit("onView", this.item.id);
+        }
+    },
+    watch: {
+    },
+}
 </script>

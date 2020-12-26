@@ -24,43 +24,43 @@
 </template>
 
 <script>
-    export default {
-        name: "Editor",
+export default {
+    name: "Editor",
 
-        props: {
-            isView: {
-                type: Boolean,
-                default: false
-            },
-            value: {
-                type: Object,
-                required: true,
-            },
+    props: {
+        isView: {
+            type: Boolean,
+            default: false
         },
+        value: {
+            type: Object,
+            required: true,
+        },
+    },
 
-        data() {
-            return {
-                name: "",
-                description: "",
-            };
+    data() {
+        return {
+            name: "",
+            description: "",
+        };
+    },
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+    },
+    watch: {
+        value(value) {
+            this.name = value.name;
+            this.description = value.description;
         },
-        computed: {
-        },
-        mounted() {
-        },
-        methods: {
-        },
-        watch: {
-            value(value) {
-                this.name = value.name;
-                this.description = value.description;
-            },
-        },
-        updated() {
-            this.$emit("onEdit", {
-                name: this.name,
-                description: this.description,
-            });
-        },
-    }
+    },
+    updated() {
+        this.$emit("onEdit", {
+            name: this.name,
+            description: this.description,
+        });
+    },
+}
 </script>

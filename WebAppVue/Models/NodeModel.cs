@@ -117,10 +117,10 @@ namespace WebAppVue.Models
             if (description == null) return -1;
 
             name.Text = item.Name;
-            name.ImageIds = NodeModel.JsonSerialize(item.ImageIds);
-            name.Sort = item.Sort;
-            name.Date = NodeModel.ConvertDateToInt(item.TimeStamp);
-            name.Time = NodeModel.ConvertTimeToInt(item.TimeStamp);
+            if (item.ImageIds != null) name.ImageIds = NodeModel.JsonSerialize(item.ImageIds);
+            if (item.Sort == -1) name.Sort = item.Sort;
+            if (item.TimeStamp != null) name.Date = NodeModel.ConvertDateToInt(item.TimeStamp);
+            if (item.TimeStamp != null) name.Time = NodeModel.ConvertTimeToInt(item.TimeStamp);
             description.Text = item.Description;
 
             return this._context.SaveChanges() > 0 ? id : -1;

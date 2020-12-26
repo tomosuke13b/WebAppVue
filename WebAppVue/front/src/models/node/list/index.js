@@ -1,5 +1,6 @@
 ﻿import api from "../api.js";
 import tasks from "@/lib/tasks.js";
+import settings from "@/settings.js";
 
 const state = {
     items: []
@@ -11,14 +12,17 @@ const getters = {
     },
     image: state => id => {
         let index = state.items.findIndex(item => item.id == id);
+        if (index === -1) return null;
         return state.items[index].image;
     },
     blankImage: state => id => {
         let index = state.items.findIndex(item => item.id == id);
+        if (index === -1) return null;
         return state.items[index].blankImage;
     },
     isImageLoaded: state => id => {
         let index = state.items.findIndex(item => item.id == id);
+        if (index === -1) return null;
         return state.items[index].isImageLoaded;
 
     }
@@ -66,16 +70,18 @@ const mutations = {
     },
     setImage(state, { namesId, image }) {
         let index = state.items.findIndex(item => item.id == namesId);
+        if (index === -1) return null;
         state.items[index].image = image;
     },
     setBlankImage(state, { namesId }) {
         let index = state.items.findIndex(item => item.id == namesId);
-        state.items[index].blankImage = require("@/models/node/list/noImage.png");
+        if (index === -1) return null;
+        state.items[index].blankImage = settings.IMAGE_NO_IMAGE;
     },
     setIsImageLoaded(state, { namesId, isImageLoaded }) {
         let index = state.items.findIndex(item => item.id == namesId);
+        if (index === -1) return null;
         state.items[index].isImageLoaded = isImageLoaded;
-
     }
 };
 

@@ -22,33 +22,32 @@
 </template>
 
 <script>
+export default {
+    name: "Bottom",
 
-    export default {
-        name: "Bottom",
-
-        props: {
-        },
-        data: () => ({
-        }),
-        computed: {
-        },
-        mounted() {
-        },
-        methods: {
-          router(value) {
-            switch(value) {
-              case "list":
-                this.$router.push( { name: "list" } );
-                return;
-              case "info":
-                this.$router.push( { name: "info" } );
-                return;
-              case "":
-              default:
-                this.$router.push( { name: "home" } );
-                return;
-            }
-          }
+    props: {
+    },
+    data: () => ({
+    }),
+    computed: {
+    },
+    mounted() {
+    },
+    methods: {
+      router(value) {
+        switch(value) {
+          case "list":
+            this.$router.push( { name: "list" } );
+            return;
+          case "info":
+            this.$router.push( { name: "info" } );
+            return;
+          case "":
+          default:
+            this.$router.push( { name: "home" } );
+            return;
         }
+      }
     }
+}
 </script>

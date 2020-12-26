@@ -3,11 +3,10 @@
         <v-btn class="mx-2" fixed right fab dark style="bottom: 80px" color="indigo" @click="newItem">
             <v-icon dark>mdi-plus</v-icon>
         </v-btn>
-        <v-row
-            class="text-center"
-            v-for="(item, index) in items"
-            :key="index">
-            <v-col>
+        <v-row class="text-center">
+            <v-col
+                v-for="(item, index) in items"
+                :key="index">
                 <ItemCard :item="item" @onEdit="onEdit" @onView="onView" style="padding-bottom: 2px" />
             </v-col>
         </v-row>
@@ -15,36 +14,36 @@
 </template>
 
 <script>
-    import { ItemCard } from "./card";
+import { ItemCard } from "./card";
 
-    export default {
-        name: "List",
-        components: { ItemCard },
+export default {
+    name: "List",
+    components: { ItemCard },
 
-        props: {
+    props: {
+    },
+    data: () => ({
+    }),
+    computed: {
+        items() {
+            return this.$store.getters["list/items"];
+        }
+    },
+    mounted() {
+        this.$store.dispatch("list/load");
+    },
+    methods: {
+        onEdit(id) {
+            if(id === undefined || id == -1) return;
+            this.$router.push({ name: "detail", params: { id: id, isView: false } });
         },
-        data: () => ({
-        }),
-        computed: {
-            items() {
-                return this.$store.getters["list/items"];
-            },
+        onView(id) {
+            if(id === undefined || id == -1) return;
+            this.$router.push({ name: "detail", params: { id: id, isView: true } });
         },
-        mounted() {
-            this.$store.dispatch("list/load");
-        },
-        methods: {
-            onEdit(id) {
-                if(id === undefined || id == -1) return;
-                this.$router.push({ name: "detail", params: { id: id, isView: false } });
-            },
-            onView(id) {
-                if(id === undefined || id == -1) return;
-                this.$router.push({ name: "detail", params: { id: id, isView: true } });
-            },
-            newItem() {
-                this.$router.push( { name: "new" } );
-            }
+        newItem() {
+            this.$router.push( { name: "new" } );
         }
     }
+}
 </script>

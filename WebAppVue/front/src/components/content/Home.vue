@@ -13,14 +13,14 @@
 </template>
 
 <script>
-    export default {
-        name: 'Home',
+export default {
+    name: 'Home',
 
-        data: () => ({
-        }),
-        computed: {
-        },
-        mounted() {
-        }
+    data: () => ({
+    }),
+    computed: {
+    },
+    mounted() {
     }
+}
 </script>

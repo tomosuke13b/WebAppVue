@@ -9,7 +9,7 @@
         alt="Logo"
         class="shrink mr-2"
         contain
-        src="@/assets/logo.png"
+        :src="logo"
         transition="scale-transition"
         width="200"
       />
@@ -18,19 +18,22 @@
 </template>
 
 <script>
+import settings from "@/settings.js";
+export default {
+    name: "Header",
 
-    export default {
-        name: "Header",
-
-        props: {
-        },
-        data: () => ({
-        }),
-        computed: {
-        },
-        mounted() {
-        },
-        methods: {
-        }
+    props: {
+    },
+    data: () => ({
+    }),
+    computed: {
+      logo() {
+        return settings.IMAGE_LOGO;
+      }
+    },
+    mounted() {
+    },
+    methods: {
     }
+}
 </script>

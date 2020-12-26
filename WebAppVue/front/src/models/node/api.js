@@ -14,7 +14,6 @@ export default {
         });
     },
     post(body) {
-        console.log(body);
         return api({
             endpoint: "/node",
             method: "POST",
@@ -41,7 +40,6 @@ export default {
         });
     },
     postImage(image) {
-        console.log(image);
         return api({
             endpoint: "/image",
             method: "POST",
