@@ -25,8 +25,6 @@
 
 <script>
 export default {
-    name: "Editor",
-
     props: {
         isView: {
             type: Boolean,

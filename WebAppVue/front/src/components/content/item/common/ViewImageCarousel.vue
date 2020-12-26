@@ -16,7 +16,6 @@
 <script>
 import { ViewImage } from "./image";
 export default {
-    name: "ViewImageCarousel",
     components: { ViewImage },
     props: {
         images: {

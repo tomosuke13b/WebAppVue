@@ -23,8 +23,6 @@
 
 <script>
 export default {
-    name: "Bottom",
-
     props: {
     },
     data: () => ({

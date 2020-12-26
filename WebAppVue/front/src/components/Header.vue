@@ -20,8 +20,6 @@
 <script>
 import settings from "@/settings.js";
 export default {
-    name: "Header",
-
     props: {
     },
     data: () => ({

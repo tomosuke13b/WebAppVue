@@ -45,7 +45,6 @@
 <script>
 import { Editor, ViewImageCarousel } from "./common";
 export default {
-    name: "New",
     components: { Editor, ViewImageCarousel },
 
     props: {

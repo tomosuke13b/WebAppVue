@@ -15,7 +15,6 @@
 
 <script>
 export default {
-  name: "ViewImage",
   props: {
     image: {
       type: Object,

@@ -17,7 +17,6 @@
 import { ItemCard } from "./card";
 
 export default {
-    name: "List",
     components: { ItemCard },
 
     props: {
