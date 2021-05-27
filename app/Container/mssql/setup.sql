@@ -1,0 +1,3 @@
+CREATE DATABASE WebAppDB;
+GO
+USE WebAppDB;
